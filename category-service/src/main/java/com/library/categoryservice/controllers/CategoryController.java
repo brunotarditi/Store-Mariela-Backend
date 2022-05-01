@@ -1,35 +1,29 @@
 package com.library.categoryservice.controllers;
 
 import com.library.categoryservice.entities.Category;
-import com.library.categoryservice.services.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.library.categoryservice.services.ICategoryService;
+import com.library.commonsservice.controllers.CommonController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/categories")
-public class CategoryController {
+public class CategoryController extends CommonController<Category, ICategoryService> {
 
-    private final CategoryService categoryService;
-
-    @Autowired
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public CategoryController(ICategoryService iCategoryService) {
+        super(iCategoryService);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllCategories(){
-        return new ResponseEntity<>(this.categoryService.findAllCategories(), HttpStatus.OK);
-    }
+    @PutMapping("/{id}}")
+    public ResponseEntity<?> save(@RequestBody Category category, @PathVariable Long id){
+        Optional<Category> categoryOptional = commonService.findById(id);
+        if (categoryOptional.isEmpty())
+            return new ResponseEntity<>("Categoría no encontrada.", HttpStatus.NOT_FOUND);
+        categoryOptional.get().setName(category.getName());
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getOneCategory(@PathVariable Long id){
-        return new ResponseEntity<>(this.categoryService.findByIdCategory(id), HttpStatus.OK);
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody Category category){
-        return new ResponseEntity<>(this.categoryService.save(category), HttpStatus.OK);
+        return new ResponseEntity<>(commonService.save(categoryOptional.get()), HttpStatus.OK);
     }
 }
