@@ -1,34 +1,30 @@
 package com.library.brandservice.controllers;
 
 import com.library.brandservice.entities.Brand;
-import com.library.brandservice.services.BrandService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.library.brandservice.services.IBrandService;
+import com.library.commonsservice.controllers.CommonController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/brands")
-public class BrandController {
-    private final BrandService brandService;
+public class BrandController extends CommonController<Brand, IBrandService> {
 
-    @Autowired
-    public BrandController(BrandService brandService) {
-        this.brandService = brandService;
+    public BrandController(IBrandService iBrandService) {
+        super(iBrandService);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllBrands() {
-        return new ResponseEntity<>(this.brandService.findAllBrands(), HttpStatus.OK);
-    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> save(@RequestBody Brand brand, @PathVariable Long id) {
+        Optional<Brand> brandOptional = commonService.findById(id);
+        if (brandOptional.isEmpty())
+            return new ResponseEntity<>("Marca no encontrada.", HttpStatus.NOT_FOUND);
+        brandOptional.get().setName(brand.getName());
+        brandOptional.get().setCategoryId(brand.getCategoryId());
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getOneBrand(@PathVariable Long id) {
-        return new ResponseEntity<>(this.brandService.findByIdBrand(id), HttpStatus.OK);
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody Brand brand) {
-        return new ResponseEntity<>(this.brandService.save(brand), HttpStatus.OK);
+        return new ResponseEntity<>(commonService.save(brandOptional.get()), HttpStatus.OK);
     }
 }
