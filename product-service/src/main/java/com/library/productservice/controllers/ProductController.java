@@ -1,34 +1,31 @@
 package com.library.productservice.controllers;
 
+import com.library.commonsservice.controllers.CommonController;
 import com.library.productservice.entities.Product;
-import com.library.productservice.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.library.productservice.services.IProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/products")
-public class ProductController {
-    private final ProductService productService;
+public class ProductController extends CommonController<Product, IProductService> {
 
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(IProductService iProductService) {
+        super(iProductService);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllProducts(){
-        return new ResponseEntity<>(this.productService.findAllProducts(), HttpStatus.OK);
-    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@RequestBody Product product, @PathVariable Long id){
+        Optional<Product> productOptional = commonService.findById(id);
+        if (productOptional.isEmpty())
+            return new ResponseEntity<>("Producto no encontrado.", HttpStatus.NOT_FOUND);
+        productOptional.get().setName(product.getName());
+        productOptional.get().setPrice(product.getPrice());
+        productOptional.get().setBrandId(product.getBrandId());
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getOneProduct(@PathVariable Long id){
-        return new ResponseEntity<>(this.productService.findByIdProduct(id), HttpStatus.OK);
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody Product product){
-        return new ResponseEntity<>(this.productService.save(product), HttpStatus.OK);
+        return new ResponseEntity<>(commonService.save(productOptional.get()), HttpStatus.OK);
     }
 }
