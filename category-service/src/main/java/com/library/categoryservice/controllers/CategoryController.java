@@ -17,7 +17,7 @@ public class CategoryController extends CommonController<Category, ICategoryServ
         super(iCategoryService);
     }
 
-    @PutMapping("/{id}}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> save(@RequestBody Category category, @PathVariable Long id){
         Optional<Category> categoryOptional = commonService.findById(id);
         if (categoryOptional.isEmpty())
