@@ -31,9 +31,6 @@ public class Brand implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createAt;
 
-    @Column(name = "id_category")
-    private Long categoryId;
-
     @PrePersist
     public void createAt(){
         this.createAt = new Date();

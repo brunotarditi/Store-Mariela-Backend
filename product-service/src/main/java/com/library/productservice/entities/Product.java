@@ -33,6 +33,9 @@ public class Product implements Serializable {
     @Column(name = "id_brand")
     private Long brandId;
 
+    @Column(name = "id_category")
+    private Long categoryId;
+
     @PrePersist
     public void createAt(){
         this.createAt = new Date();

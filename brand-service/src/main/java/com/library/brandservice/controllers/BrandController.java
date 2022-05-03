@@ -23,7 +23,6 @@ public class BrandController extends CommonController<Brand, IBrandService> {
         if (brandOptional.isEmpty())
             return new ResponseEntity<>("Marca no encontrada.", HttpStatus.NOT_FOUND);
         brandOptional.get().setName(brand.getName());
-        brandOptional.get().setCategoryId(brand.getCategoryId());
 
         return new ResponseEntity<>(commonService.save(brandOptional.get()), HttpStatus.OK);
     }
