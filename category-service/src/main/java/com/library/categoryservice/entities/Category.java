@@ -31,8 +31,13 @@ public class Category implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createAt;
 
+    @Column(name = "updateAt")
+    @Temporal(TemporalType.DATE)
+    private Date updateAt;
+
     @PrePersist
     public void createAt(){
         this.createAt = new Date();
+        this.updateAt = new Date();
     }
 }

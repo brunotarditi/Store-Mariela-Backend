@@ -30,6 +30,10 @@ public class Product implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createAt;
 
+    @Column(name = "updateAt")
+    @Temporal(TemporalType.DATE)
+    private Date updateAt;
+
     @Column(name = "id_brand")
     private Long brandId;
 
@@ -39,5 +43,7 @@ public class Product implements Serializable {
     @PrePersist
     public void createAt(){
         this.createAt = new Date();
+        this.updateAt = new Date();
     }
+
 }

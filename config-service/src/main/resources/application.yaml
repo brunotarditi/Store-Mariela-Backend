@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          default-label: eureka-service
+          default-label: validation
           uri: https://github.com/brunotarditi/Store-Mariela-Backend
           search-paths: config-data
   application:
