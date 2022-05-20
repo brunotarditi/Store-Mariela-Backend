@@ -2,13 +2,16 @@ package com.library.commonsservice.services;
 
 import com.library.commonsservice.factory.IFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CommonService<E, R extends CrudRepository<E, Long>, TDto> implements ICommonService<E, TDto>{
+public class CommonService<E, R extends PagingAndSortingRepository<E, Long>, TDto> implements ICommonService<E, TDto>{
     protected final R repository;
     protected final IFactory<E, TDto> iFactory;
 
@@ -26,6 +29,17 @@ public class CommonService<E, R extends CrudRepository<E, Long>, TDto> implement
                 .stream()
                 .map(iFactory::createDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<TDto> findAll(Pageable pageable) {
+        Page<E> entities = repository.findAll(pageable);
+        List<TDto> dtos = entities
+                .stream()
+                .map(iFactory::createDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(dtos);
     }
 
     @Override
