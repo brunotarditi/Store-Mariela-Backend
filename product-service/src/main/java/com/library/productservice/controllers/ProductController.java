@@ -33,6 +33,7 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
             return new ResponseEntity<>("Producto no encontrado.", HttpStatus.NOT_FOUND);
         productOptional.get().setName(productDto.getName());
         productOptional.get().setPrice(productDto.getPrice());
+        productOptional.get().setCreateAt(productOptional.get().getCreateAt());
         productOptional.get().setUpdateAt(new Date());
         productOptional.get().setBrandId(productDto.getBrandId());
         productOptional.get().setCategoryId(productDto.getCategoryId());

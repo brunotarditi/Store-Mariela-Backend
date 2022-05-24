@@ -20,7 +20,9 @@ public class ProductDto {
     private String name;
     @NotNull
     private Double price;
+    @NotNull
     private Long brandId;
+    @NotNull
     private Long categoryId;
     private Date createAt;
     private Date updateAt;

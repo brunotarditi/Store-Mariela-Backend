@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class BrandService extends CommonService<Brand, IBrandRepository, BrandDto> implements IBrandService {
@@ -27,12 +28,12 @@ public class BrandService extends CommonService<Brand, IBrandRepository, BrandDt
     @Override
     public Map<String, Object> getBrandsWithProducts(Long brandId) {
         Map<String, Object> results = new HashMap<>();
-        Brand brand = this.repository.findById(brandId).orElse(null);
-        if (brand == null) {
+        Optional<BrandDto> brandDto = this.findById(brandId);
+        if (brandDto.isEmpty()) {
             results.put("Message", "No existe la marca");
             return results;
         }
-        results.put("Brand", brand);
+        results.put("Brand", brandDto);
         List<Product> products = productFeignClient.getProductsByBrandId(brandId);
         if (products.isEmpty())
             results.put("Products", "No existen los productos");
