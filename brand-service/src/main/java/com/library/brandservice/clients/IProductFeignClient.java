@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @FeignClient(name = "products-service")
-public interface ProductFeignClient {
+public interface IProductFeignClient {
 
     @GetMapping("/api/products/byBrand/{brandId}")
     List<Product> getProductsByBrandId(@PathVariable long brandId);

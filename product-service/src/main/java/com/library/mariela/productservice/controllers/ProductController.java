@@ -41,8 +41,8 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
     }
 
     @GetMapping("/byBrand/{brandId}")
-    public ResponseEntity<?> getProductsByBrandId(@PathVariable long brandId) {
-        List<Product> products = this.commonService.findByBrandId(brandId);
+    public ResponseEntity<?> getProductsByBrandId(@PathVariable Long brandId) {
+        List<ProductDto> products = this.commonService.getProductBrandById(brandId);
         return ResponseEntity.ok(products);
     }
 }

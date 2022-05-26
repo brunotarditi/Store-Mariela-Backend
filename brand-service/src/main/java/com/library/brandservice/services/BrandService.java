@@ -1,6 +1,6 @@
 package com.library.brandservice.services;
 
-import com.library.brandservice.clients.ProductFeignClient;
+import com.library.brandservice.clients.IProductFeignClient;
 import com.library.brandservice.dtos.BrandDto;
 import com.library.brandservice.entities.Brand;
 import com.library.brandservice.factory.BrandFactory;
@@ -17,10 +17,10 @@ import java.util.Optional;
 
 @Service
 public class BrandService extends CommonService<Brand, IBrandRepository, BrandDto> implements IBrandService {
-    private final ProductFeignClient productFeignClient;
+    private final IProductFeignClient productFeignClient;
 
     @Autowired
-    public BrandService(IBrandRepository iBrandRepository, BrandFactory brandFactory, ProductFeignClient productFeignClient) {
+    public BrandService(IBrandRepository iBrandRepository, BrandFactory brandFactory, IProductFeignClient productFeignClient) {
         super(iBrandRepository, brandFactory);
         this.productFeignClient = productFeignClient;
     }

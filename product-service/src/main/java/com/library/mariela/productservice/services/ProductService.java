@@ -8,6 +8,7 @@ import com.library.mariela.productservice.repositories.IProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService extends CommonService<Product, IProductRepository, ProductDto> implements IProductService {
@@ -16,8 +17,12 @@ public class ProductService extends CommonService<Product, IProductRepository, P
         super(iProductRepository, productFactory);
     }
     @Override
-    public List<Product> findByBrandId(Long brandId) {
-        return this.repository.findProductByBrandId(brandId);
+    public List<ProductDto> getProductBrandById(Long brandId) {
+        List<Product> products = this.repository.findProductByBrandId(brandId);
+        return products
+                .stream()
+                .map(iFactory::createDto)
+                .collect(Collectors.toList());
     }
 
 }

@@ -7,5 +7,5 @@ import com.library.mariela.productservice.entities.Product;
 import java.util.List;
 
 public interface IProductService extends ICommonService<Product, ProductDto> {
-    List<Product> findByBrandId(Long brandId);
+    List<ProductDto> getProductBrandById(Long brandId);
 }
