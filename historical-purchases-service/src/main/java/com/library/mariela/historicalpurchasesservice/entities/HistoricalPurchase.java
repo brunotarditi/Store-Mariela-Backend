@@ -1,4 +1,4 @@
-package com.library.stockcontrolservice.entities;
+package com.library.mariela.historicalpurchasesservice.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,20 +13,11 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "stock_control")
-public class StockControl {
+public class HistoricalPurchase {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "minimum")
-    private int minimum;
-
-    @Column(name = "current")
-    private int current;
-
-    @Column(name = "id_product", unique = true)
-    private Long productId;
 }

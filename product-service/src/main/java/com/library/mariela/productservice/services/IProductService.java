@@ -1,8 +1,8 @@
-package com.library.productservice.services;
+package com.library.mariela.productservice.services;
 
 import com.library.commonsservice.services.ICommonService;
-import com.library.productservice.dtos.ProductDto;
-import com.library.productservice.entities.Product;
+import com.library.mariela.productservice.dtos.ProductDto;
+import com.library.mariela.productservice.entities.Product;
 
 import java.util.List;
 

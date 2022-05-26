@@ -1,6 +1,6 @@
-package com.library.productservice.repositories;
+package com.library.mariela.productservice.repositories;
 
-import com.library.productservice.entities.Product;
+import com.library.mariela.productservice.entities.Product;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

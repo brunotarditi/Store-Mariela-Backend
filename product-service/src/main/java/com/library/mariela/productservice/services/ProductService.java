@@ -1,10 +1,10 @@
-package com.library.productservice.services;
+package com.library.mariela.productservice.services;
 
 import com.library.commonsservice.services.CommonService;
-import com.library.productservice.dtos.ProductDto;
-import com.library.productservice.entities.Product;
-import com.library.productservice.factory.ProductFactory;
-import com.library.productservice.repositories.IProductRepository;
+import com.library.mariela.productservice.factories.ProductFactory;
+import com.library.mariela.productservice.dtos.ProductDto;
+import com.library.mariela.productservice.entities.Product;
+import com.library.mariela.productservice.repositories.IProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

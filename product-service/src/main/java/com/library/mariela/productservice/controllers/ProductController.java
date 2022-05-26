@@ -1,15 +1,14 @@
-package com.library.productservice.controllers;
+package com.library.mariela.productservice.controllers;
 
 import com.library.commonsservice.controllers.CommonController;
-import com.library.productservice.dtos.ProductDto;
-import com.library.productservice.entities.Product;
-import com.library.productservice.services.IProductService;
+import com.library.mariela.productservice.dtos.ProductDto;
+import com.library.mariela.productservice.entities.Product;
+import com.library.mariela.productservice.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;

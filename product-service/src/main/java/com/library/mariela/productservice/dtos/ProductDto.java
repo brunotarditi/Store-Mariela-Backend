@@ -1,4 +1,4 @@
-package com.library.productservice.dtos;
+package com.library.mariela.productservice.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

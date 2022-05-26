@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: historical-purchase-service
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8081
+
+  # Mysql config
+  datasource:
+    url: jdbc:postgresql://localhost:5432/librarydb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  # JPA e Hibernate
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

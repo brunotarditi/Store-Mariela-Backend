@@ -1,9 +1,9 @@
-package com.library.productservice.factory;
+package com.library.mariela.productservice.factories;
 
 import com.library.commonsservice.factory.IFactory;
 import com.library.commonsservice.mapper.ModelMapperConfig;
-import com.library.productservice.dtos.ProductDto;
-import com.library.productservice.entities.Product;
+import com.library.mariela.productservice.dtos.ProductDto;
+import com.library.mariela.productservice.entities.Product;
 import org.springframework.stereotype.Component;
 
 @Component

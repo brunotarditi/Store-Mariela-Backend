@@ -1,4 +1,4 @@
-package com.library.productservice.entities;
+package com.library.mariela.productservice.entities;
 
 import lombok.*;
 import javax.persistence.*;
@@ -26,11 +26,11 @@ public class Product implements Serializable {
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "createAt")
+    @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private Date createAt;
 
-    @Column(name = "updateAt")
+    @Column(name = "update_at")
     @Temporal(TemporalType.DATE)
     private Date updateAt;
 
