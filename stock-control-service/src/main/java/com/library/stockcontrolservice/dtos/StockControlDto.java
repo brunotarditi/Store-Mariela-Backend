@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.Column;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,5 +14,7 @@ public class StockControlDto {
     private Long id;
     private int minimum;
     private int current;
+    private Date createAt;
+    private Date updateAt;
     private Long productId;
 }

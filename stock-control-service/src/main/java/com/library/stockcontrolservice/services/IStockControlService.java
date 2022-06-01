@@ -4,8 +4,9 @@ import com.library.commonsservice.services.ICommonService;
 import com.library.stockcontrolservice.dtos.StockControlDto;
 import com.library.stockcontrolservice.entities.StockControl;
 
-import java.util.List;
+import java.util.Optional;
+
 
 public interface IStockControlService extends ICommonService<StockControl, StockControlDto> {
-    List<StockControlDto> getStockControlByProductId(Long productId);
+    Optional<StockControlDto> getStockControlByProductId(Long productId);
 }

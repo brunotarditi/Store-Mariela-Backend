@@ -6,9 +6,7 @@ import com.library.stockcontrolservice.entities.StockControl;
 import com.library.stockcontrolservice.factories.StockFactory;
 import com.library.stockcontrolservice.repositories.IStockControlRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class StockControlService extends CommonService<StockControl, IStockControlRepository, StockControlDto> implements IStockControlService {
@@ -18,11 +16,11 @@ public class StockControlService extends CommonService<StockControl, IStockContr
     }
 
     @Override
-    public List<StockControlDto> getStockControlByProductId(Long productId) {
-        List<StockControl> stockControls = this.repository.findStockControlByProductId(productId);
-        return stockControls
+    public Optional<StockControlDto> getStockControlByProductId(Long productId) {
+        Optional<StockControl> stockControl = this.repository.findStockControlByProductId(productId);
+        return stockControl
                 .stream()
                 .map(iFactory::createDto)
-                .collect(Collectors.toList());
+                .findFirst();
     }
 }

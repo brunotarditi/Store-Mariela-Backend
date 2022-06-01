@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/stocks")
@@ -23,8 +23,8 @@ public class StockControlController extends CommonController<StockControl, Stock
     }
 
     @GetMapping("/byProduct/{productId}")
-    public ResponseEntity<?> getHistoricalPurchaseByProductId(@PathVariable Long productId) {
-        List<StockControlDto> products = this.commonService.getStockControlByProductId(productId);
+    public ResponseEntity<?> getStockControlByProductId(@PathVariable Long productId) {
+        Optional<StockControlDto> products = this.commonService.getStockControlByProductId(productId);
         return ResponseEntity.ok(products);
     }
 }

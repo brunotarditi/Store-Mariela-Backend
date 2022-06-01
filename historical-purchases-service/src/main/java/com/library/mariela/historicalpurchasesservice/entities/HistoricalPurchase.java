@@ -13,7 +13,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "stock_control")
+@Table(name = "historical_purchase")
 public class HistoricalPurchase {
     private static final long serialVersionUID = 1L;
 
