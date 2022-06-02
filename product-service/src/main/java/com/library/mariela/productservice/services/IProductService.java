@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface IProductService extends ICommonService<Product, ProductDto> {
     List<ProductDto> getProductBrandById(Long brandId);
-    void saveStock(Long productId, Optional<StockControl> stockControl, HistoricalPurchase purchase);
-    HistoricalPurchase savePurchase(Long productId, HistoricalPurchase purchase);
+    void saveStock(Long productId, Optional<StockControl> stockControl, int minimum, HistoricalPurchase purchase);
+    HistoricalPurchase savePurchase(Long productId, int minimum, HistoricalPurchase purchase);
     Map<String, Object> getProductsWithStocksAndPurchases(Long productId);
 }

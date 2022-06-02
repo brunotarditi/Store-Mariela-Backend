@@ -5,6 +5,7 @@ import com.library.mariela.productservice.dtos.ProductDto;
 import com.library.mariela.productservice.entities.Product;
 import com.library.mariela.productservice.models.HistoricalPurchase;
 import com.library.mariela.productservice.services.IProductService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,16 +49,26 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
         return ResponseEntity.ok(products);
     }
 
+    @CircuitBreaker(name = "allCB", fallbackMethod = "fallbackGetAll")
     @GetMapping("/all/{productId}")
     public ResponseEntity<?> getAll(@PathVariable Long productId) {
         Map<String, Object> results = this.commonService.getProductsWithStocksAndPurchases(productId);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
+    @CircuitBreaker(name = "purchasesCB", fallbackMethod = "fallbackSavePurchase")
     @PostMapping("/savePurchase/{productId}")
-    public ResponseEntity<?> saveTeacher(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase) {
+    public ResponseEntity<?> savePurchase(@PathVariable Long productId, @RequestBody int minimum, @RequestBody HistoricalPurchase purchase) {
         if (this.commonService.findById(productId).isEmpty())
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(this.commonService.savePurchase(productId, purchase));
+        return ResponseEntity.ok(this.commonService.savePurchase(productId, minimum, purchase));
+    }
+
+    private ResponseEntity<?> fallbackSavePurchase(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase, RuntimeException e){
+        return new ResponseEntity<>("No pudo añadirse la compra.", HttpStatus.OK);
+    }
+
+    private ResponseEntity<?> fallbackGetAll(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase, RuntimeException e){
+        return new ResponseEntity<>("Este producto no tiene disponible el stock y las compras.", HttpStatus.OK);
     }
 }

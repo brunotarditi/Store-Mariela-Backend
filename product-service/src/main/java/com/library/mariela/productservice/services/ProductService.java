@@ -3,6 +3,7 @@ package com.library.mariela.productservice.services;
 import com.library.commonsservice.services.CommonService;
 import com.library.mariela.productservice.clients.IHistoricalPurchaseFeignClient;
 import com.library.mariela.productservice.clients.IStockControlFeignClient;
+import com.library.mariela.productservice.customExceptions.MyException;
 import com.library.mariela.productservice.factories.ProductFactory;
 import com.library.mariela.productservice.dtos.ProductDto;
 import com.library.mariela.productservice.entities.Product;
@@ -37,15 +38,15 @@ public class ProductService extends CommonService<Product, IProductRepository, P
     }
 
     @Override
-    public void saveStock(Long productId, Optional<StockControl> stockControl, HistoricalPurchase purchase) {
+    public void saveStock(Long productId, Optional<StockControl> stockControl, int minimum, HistoricalPurchase purchase) {
         if (stockControl.isEmpty()) {
             StockControl stock = new StockControl();
-            stock.setMinimum(1);
+            stock.setMinimum(minimum);
             stock.setCurrent(purchase.getQuantity());
             stock.setProductId(productId);
             this.stockControlFeignClient.save(stock);
         }  else {
-            stockControl.get().setMinimum(stockControl.get().getMinimum());
+            stockControl.get().setMinimum(minimum);
             stockControl.get().setCurrent(stockControl.get().getCurrent() + purchase.getQuantity());
             stockControl.get().setCreateAt(stockControl.get().getCreateAt());
             stockControl.get().setUpdateAt(new Date());
@@ -55,11 +56,15 @@ public class ProductService extends CommonService<Product, IProductRepository, P
     }
 
     @Override
-    public HistoricalPurchase savePurchase(Long productId, HistoricalPurchase purchase) {
+    public HistoricalPurchase savePurchase(Long productId, int minimum, HistoricalPurchase purchase) {
         Optional<StockControl> stock = this.stockControlFeignClient.getStockControlByProductId(productId);
-        saveStock(productId, stock, purchase);
-        purchase.setProductId(productId);
-        return this.purchaseFeignClient.save(purchase);
+        try{
+            saveStock(productId, stock, minimum, purchase);
+            purchase.setProductId(productId);
+            return this.purchaseFeignClient.save(purchase);
+        }catch (MyException e){
+            throw new MyException("No se pudo guardar la compra y el stock.");
+        }
     }
 
 
