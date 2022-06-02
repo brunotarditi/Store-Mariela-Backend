@@ -64,11 +64,11 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
         return ResponseEntity.ok(this.commonService.savePurchase(productId, minimum, purchase));
     }
 
-    private ResponseEntity<?> fallbackSavePurchase(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase, RuntimeException e){
-        return new ResponseEntity<>("No pudo añadirse la compra.", HttpStatus.OK);
+    private ResponseEntity<HistoricalPurchase> fallbackSavePurchase(@PathVariable Long productId, @RequestBody int minimum, @RequestBody HistoricalPurchase purchase, RuntimeException e){
+        return new ResponseEntity("No pudo añadirse la compra.", HttpStatus.OK);
     }
 
-    private ResponseEntity<?> fallbackGetAll(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase, RuntimeException e){
-        return new ResponseEntity<>("Este producto no tiene disponible el stock y las compras.", HttpStatus.OK);
+    private ResponseEntity<Map<String, Object>> fallbackGetAll(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase, RuntimeException e){
+        return new ResponseEntity("Este producto no tiene disponible el stock y las compras.", HttpStatus.OK);
     }
 }
