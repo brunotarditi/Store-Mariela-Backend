@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,7 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody ProductDto productDto, BindingResult result, @PathVariable Long id){
+    public ResponseEntity<?> update(@Valid @RequestBody ProductDto productDto, BindingResult result, @PathVariable Long id) {
         if (result.hasErrors())
             return this.validate(result);
         Optional<ProductDto> productOptional = commonService.findById(id);
@@ -56,19 +57,19 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
+    private ResponseEntity<?> fallbackGetAll(@PathVariable Long productId, RuntimeException e) {
+        return new ResponseEntity<>("Este producto no tiene disponible el stock y las compras.", HttpStatus.OK);
+    }
+
     @CircuitBreaker(name = "purchasesCB", fallbackMethod = "fallbackSavePurchase")
     @PostMapping("/savePurchase/{productId}")
-    public ResponseEntity<?> savePurchase(@PathVariable Long productId, @RequestBody int minimum, @RequestBody HistoricalPurchase purchase) {
+    public ResponseEntity<?> savePurchase(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase) {
         if (this.commonService.findById(productId).isEmpty())
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(this.commonService.savePurchase(productId, minimum, purchase));
+        return new ResponseEntity<>(this.commonService.savePurchase(productId, purchase), HttpStatus.OK);
     }
 
-    private ResponseEntity<HistoricalPurchase> fallbackSavePurchase(@PathVariable Long productId, @RequestBody int minimum, @RequestBody HistoricalPurchase purchase, RuntimeException e){
-        return new ResponseEntity("No pudo añadirse la compra.", HttpStatus.OK);
-    }
-
-    private ResponseEntity<Map<String, Object>> fallbackGetAll(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase, RuntimeException e){
-        return new ResponseEntity("Este producto no tiene disponible el stock y las compras.", HttpStatus.OK);
+    private ResponseEntity<?> fallbackSavePurchase(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase, RuntimeException e) {
+        return new ResponseEntity<>("No pudo añadirse la compra.", HttpStatus.OK);
     }
 }

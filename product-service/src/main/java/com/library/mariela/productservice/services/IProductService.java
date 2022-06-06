@@ -8,11 +8,10 @@ import com.library.mariela.productservice.models.StockControl;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface IProductService extends ICommonService<Product, ProductDto> {
     List<ProductDto> getProductBrandById(Long brandId);
-    void saveStock(Long productId, Optional<StockControl> stockControl, int minimum, HistoricalPurchase purchase);
-    HistoricalPurchase savePurchase(Long productId, int minimum, HistoricalPurchase purchase);
+    void saveStock(Long productId, StockControl stockControl, HistoricalPurchase purchase);
+    HistoricalPurchase savePurchase(Long productId, HistoricalPurchase purchase);
     Map<String, Object> getProductsWithStocksAndPurchases(Long productId);
 }

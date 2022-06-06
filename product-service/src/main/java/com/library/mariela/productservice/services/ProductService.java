@@ -38,35 +38,36 @@ public class ProductService extends CommonService<Product, IProductRepository, P
     }
 
     @Override
-    public void saveStock(Long productId, Optional<StockControl> stockControl, int minimum, HistoricalPurchase purchase) {
-        if (stockControl.isEmpty()) {
-            StockControl stock = new StockControl();
-            stock.setMinimum(minimum);
-            stock.setCurrent(purchase.getQuantity());
-            stock.setProductId(productId);
-            this.stockControlFeignClient.save(stock);
-        }  else {
-            stockControl.get().setMinimum(minimum);
-            stockControl.get().setCurrent(stockControl.get().getCurrent() + purchase.getQuantity());
-            stockControl.get().setCreateAt(stockControl.get().getCreateAt());
-            stockControl.get().setUpdateAt(new Date());
-            stockControl.get().setProductId(productId);
-            this.stockControlFeignClient.save(stockControl.get());
-        }
+    public HistoricalPurchase savePurchase(Long productId, HistoricalPurchase purchase) {
+        Optional<StockControl> stock = stockControlFeignClient.getStockControlByProductId(productId);
+        purchase.setProductId(productId);
+        HistoricalPurchase purchaseSave = this.purchaseFeignClient.save(purchase);
+        saveStock(productId, stock.orElse(null), purchase);
+        return purchaseSave;
     }
 
     @Override
-    public HistoricalPurchase savePurchase(Long productId, int minimum, HistoricalPurchase purchase) {
-        Optional<StockControl> stock = this.stockControlFeignClient.getStockControlByProductId(productId);
-        try{
-            saveStock(productId, stock, minimum, purchase);
-            purchase.setProductId(productId);
-            return this.purchaseFeignClient.save(purchase);
-        }catch (MyException e){
-            throw new MyException("No se pudo guardar la compra y el stock.");
+    public void saveStock(Long productId, StockControl stockControl, HistoricalPurchase purchase) {
+        try {
+            if (stockControl == null) {
+                stockControl = new StockControl();
+                stockControl.setProductId(productId);
+                stockControl.setMinimum(1);
+                stockControl.setCurrent(purchase.getQuantity());
+                this.stockControlFeignClient.save(stockControl);
+
+            } else {
+                stockControl.setMinimum(1);
+                stockControl.setCurrent(stockControl.getCurrent() + purchase.getQuantity());
+                stockControl.setCreateAt(stockControl.getCreateAt());
+                stockControl.setUpdateAt(new Date());
+                stockControl.setProductId(productId);
+                this.stockControlFeignClient.save(stockControl);
+            }
+        } catch (MyException e) {
+            throw new MyException("No pudo guardarse el stock.");
         }
     }
-
 
     @Override
     public Map<String, Object> getProductsWithStocksAndPurchases(Long productId) {
