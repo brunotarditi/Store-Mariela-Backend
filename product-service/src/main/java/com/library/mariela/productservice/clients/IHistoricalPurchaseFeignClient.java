@@ -1,6 +1,6 @@
 package com.library.mariela.productservice.clients;
 
-import com.library.mariela.productservice.models.HistoricalPurchase;
+import com.library.mariela.productservice.dtos.HistoricalPurchaseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +13,8 @@ import java.util.List;
 public interface IHistoricalPurchaseFeignClient {
 
     @GetMapping("/api/purchases/byProduct/{productId}")
-    List<HistoricalPurchase> getHistoricalPurchaseByProductId(@PathVariable Long productId);
+    List<HistoricalPurchaseDto> getHistoricalPurchaseByProductId(@PathVariable Long productId);
 
     @PostMapping("/api/purchases/save")
-    HistoricalPurchase save(@RequestBody HistoricalPurchase stockControl);
+    HistoricalPurchaseDto save(@RequestBody HistoricalPurchaseDto stockControl);
 }

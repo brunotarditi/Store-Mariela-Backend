@@ -23,7 +23,7 @@ public class Product implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "price")
+    @Transient
     private Double price;
 
     @Column(name = "create_at")

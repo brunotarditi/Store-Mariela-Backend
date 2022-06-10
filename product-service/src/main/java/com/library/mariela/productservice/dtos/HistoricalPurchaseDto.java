@@ -1,24 +1,20 @@
-package com.library.stockcontrolservice.dtos;
+package com.library.mariela.productservice.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import javax.validation.constraints.NotNull;
+
 import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class StockControlDto {
+public class HistoricalPurchaseDto {
     private Long id;
-    @NotNull
-    private Integer minimum;
-    @NotNull
-    private Integer current;
-    @NotNull
-    private Integer percent;
+    private int quantity;
+    private double costPrice;
     private Date createAt;
     private Date updateAt;
     private Long productId;

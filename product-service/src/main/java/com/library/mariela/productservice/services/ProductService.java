@@ -4,11 +4,12 @@ import com.library.commonsservice.services.CommonService;
 import com.library.mariela.productservice.clients.IHistoricalPurchaseFeignClient;
 import com.library.mariela.productservice.clients.IStockControlFeignClient;
 import com.library.mariela.productservice.customExceptions.MyException;
+import com.library.mariela.productservice.dtos.PurchaseStockControlDto;
 import com.library.mariela.productservice.factories.ProductFactory;
 import com.library.mariela.productservice.dtos.ProductDto;
 import com.library.mariela.productservice.entities.Product;
-import com.library.mariela.productservice.models.HistoricalPurchase;
-import com.library.mariela.productservice.models.StockControl;
+import com.library.mariela.productservice.dtos.HistoricalPurchaseDto;
+import com.library.mariela.productservice.dtos.StockControlDto;
 import com.library.mariela.productservice.repositories.IProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -38,27 +39,35 @@ public class ProductService extends CommonService<Product, IProductRepository, P
     }
 
     @Override
-    public HistoricalPurchase savePurchase(Long productId, HistoricalPurchase purchase) {
-        Optional<StockControl> stock = stockControlFeignClient.getStockControlByProductId(productId);
-        purchase.setProductId(productId);
-        HistoricalPurchase purchaseSave = this.purchaseFeignClient.save(purchase);
-        saveStock(productId, stock.orElse(null), purchase);
-        return purchaseSave;
+    public PurchaseStockControlDto savePurchase(Long productId, PurchaseStockControlDto purchaseStock) {
+        Optional<StockControlDto> stock = this.stockControlFeignClient.getStockControlByProductId(productId);
+        HistoricalPurchaseDto purchaseDto = new HistoricalPurchaseDto();
+        if (purchaseStock.isHasIva())
+            purchaseDto.setCostPrice(purchaseStock.getCostPrice());
+        else
+            purchaseDto.setCostPrice(purchaseStock.getCostPrice() * 1.21);
+        purchaseDto.setQuantity(purchaseStock.getQuantity());
+        purchaseDto.setProductId(productId);
+        this.purchaseFeignClient.save(purchaseDto);
+        saveStock(productId, stock.orElse(null), purchaseStock);
+        return purchaseStock;
     }
 
     @Override
-    public void saveStock(Long productId, StockControl stockControl, HistoricalPurchase purchase) {
+    public void saveStock(Long productId, StockControlDto stockControl, PurchaseStockControlDto purchaseStock) {
         try {
             if (stockControl == null) {
-                stockControl = new StockControl();
+                stockControl = new StockControlDto();
                 stockControl.setProductId(productId);
-                stockControl.setMinimum(1);
-                stockControl.setCurrent(purchase.getQuantity());
+                stockControl.setMinimum(purchaseStock.getMinimum());
+                stockControl.setCurrent(purchaseStock.getQuantity());
+                stockControl.setPercent(purchaseStock.getPercent());
                 this.stockControlFeignClient.save(stockControl);
 
             } else {
-                stockControl.setMinimum(1);
-                stockControl.setCurrent(stockControl.getCurrent() + purchase.getQuantity());
+                stockControl.setMinimum(purchaseStock.getMinimum());
+                stockControl.setCurrent(stockControl.getCurrent() + purchaseStock.getQuantity());
+                stockControl.setPercent(purchaseStock.getPercent());
                 stockControl.setCreateAt(stockControl.getCreateAt());
                 stockControl.setUpdateAt(new Date());
                 stockControl.setProductId(productId);
@@ -78,19 +87,24 @@ public class ProductService extends CommonService<Product, IProductRepository, P
             return results;
         }
         results.put("Product", productDto);
-        List<HistoricalPurchase> purchases = purchaseFeignClient.getHistoricalPurchaseByProductId(productId);
+        List<HistoricalPurchaseDto> purchases = purchaseFeignClient.getHistoricalPurchaseByProductId(productId);
         if (purchases.isEmpty()) {
             results.put("Purchases", "No hay compras de este producto.");
         } else {
             results.put("Purchases", purchases);
         }
-        Optional<StockControl> stock = stockControlFeignClient.getStockControlByProductId(productId);
+        Optional<StockControlDto> stock = stockControlFeignClient.getStockControlByProductId(productId);
         if (stock.isEmpty()) {
             results.put("Stocks", "No hay stock para este producto.");
         } else {
             results.put("Stock", stock);
         }
         return results;
+    }
+
+    @Override
+    public Map<String, Object> getAllProductsWithStocksAndPurchases() {
+        return null;
     }
 
 }

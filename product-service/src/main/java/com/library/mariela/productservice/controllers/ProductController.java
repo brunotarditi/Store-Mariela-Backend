@@ -2,8 +2,9 @@ package com.library.mariela.productservice.controllers;
 
 import com.library.commonsservice.controllers.CommonController;
 import com.library.mariela.productservice.dtos.ProductDto;
+import com.library.mariela.productservice.dtos.PurchaseStockControlDto;
 import com.library.mariela.productservice.entities.Product;
-import com.library.mariela.productservice.models.HistoricalPurchase;
+import com.library.mariela.productservice.dtos.HistoricalPurchaseDto;
 import com.library.mariela.productservice.services.IProductService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,8 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
     }
 
     @CircuitBreaker(name = "allCB", fallbackMethod = "fallbackGetAll")
-    @GetMapping("/all/{productId}")
-    public ResponseEntity<?> getAll(@PathVariable Long productId) {
+    @GetMapping("/withStocksAndPurchases/{productId}")
+    public ResponseEntity<?> getProductsWithStocksAndPurchases(@PathVariable Long productId) {
         Map<String, Object> results = this.commonService.getProductsWithStocksAndPurchases(productId);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
@@ -63,13 +64,13 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
 
     @CircuitBreaker(name = "purchasesCB", fallbackMethod = "fallbackSavePurchase")
     @PostMapping("/savePurchase/{productId}")
-    public ResponseEntity<?> savePurchase(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase) {
+    public ResponseEntity<?> savePurchase(@PathVariable Long productId, @RequestBody PurchaseStockControlDto purchaseStock) {
         if (this.commonService.findById(productId).isEmpty())
             return ResponseEntity.notFound().build();
-        return new ResponseEntity<>(this.commonService.savePurchase(productId, purchase), HttpStatus.OK);
+        return new ResponseEntity<>(this.commonService.savePurchase(productId, purchaseStock), HttpStatus.OK);
     }
 
-    private ResponseEntity<?> fallbackSavePurchase(@PathVariable Long productId, @RequestBody HistoricalPurchase purchase, RuntimeException e) {
+    private ResponseEntity<?> fallbackSavePurchase(@PathVariable Long productId, @RequestBody HistoricalPurchaseDto purchase, RuntimeException e) {
         return new ResponseEntity<>("No pudo añadirse la compra.", HttpStatus.OK);
     }
 }

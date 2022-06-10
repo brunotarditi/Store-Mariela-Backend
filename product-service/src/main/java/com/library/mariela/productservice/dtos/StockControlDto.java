@@ -1,4 +1,4 @@
-package com.library.mariela.productservice.models;
+package com.library.mariela.productservice.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +11,11 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-public class StockControl {
+public class StockControlDto {
     private Long id;
     private int minimum;
     private int current;
+    private int percent;
     private Date createAt;
     private Date updateAt;
     private Long productId;
