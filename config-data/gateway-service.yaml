@@ -39,10 +39,10 @@ spring:
           predicates:
             - Path=/api/products/**
         - id: stock-control-service
-            uri: lb://stock-control-service
-            predicates:
-              - Path=/api/stocks/**
+          uri: lb://stock-control-service
+          predicates:
+            - Path=/api/stocks/**
         - id: historical-purchase-service
-            uri: lb://historical-purchase-service
-            predicates:
-              - Path=/api/purchases/**
+          uri: lb://historical-purchase-service
+          predicates:
+            - Path=/api/purchases/**
