@@ -18,11 +18,12 @@ import java.util.Optional;
 @Service
 public class BrandService extends CommonService<Brand, IBrandRepository, BrandDto> implements IBrandService {
     private final IProductFeignClient productFeignClient;
-
+    private final BrandFactory brandFactory;
     @Autowired
     public BrandService(IBrandRepository iBrandRepository, BrandFactory brandFactory, IProductFeignClient productFeignClient) {
         super(iBrandRepository, brandFactory);
         this.productFeignClient = productFeignClient;
+        this.brandFactory = brandFactory;
     }
 
     @Override
@@ -40,5 +41,11 @@ public class BrandService extends CommonService<Brand, IBrandRepository, BrandDt
         else
             results.put("Products", products);
         return results;
+    }
+
+    @Override
+    public List<Brand> saveAll(List<BrandDto> brandDtos) {
+        List<Brand> brands = this.brandFactory.createEntitiesList(brandDtos);
+        return (List<Brand>) this.repository.saveAll(brands);
     }
 }

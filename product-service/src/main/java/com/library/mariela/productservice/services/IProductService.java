@@ -13,6 +13,6 @@ public interface IProductService extends ICommonService<Product, ProductDto> {
     List<ProductDto> getProductBrandById(Long brandId);
     void saveStock(Long productId, StockControlDto stockControl, PurchaseStockControlDto purchaseStock);
     PurchaseStockControlDto savePurchase(Long productId, PurchaseStockControlDto purchaseStock);
-    Map<String, Object> getProductsWithStocksAndPurchases(Long productId);
-    Map<String, Object> getAllProductsWithStocksAndPurchases();
+    Map<String, Object> getProductWithStockAndPurchases(Long productId);
+    Map<String, Object> getAllProductsWithStocks();
 }

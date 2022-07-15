@@ -18,6 +18,7 @@ public class PurchaseStockControlDto {
     private boolean hasIva;
     private int quantity;
     private double costPrice;
+    private double listOfPrice;
     private Date createAt;
     private Date updateAt;
     private Long productId;

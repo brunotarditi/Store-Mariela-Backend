@@ -16,6 +16,7 @@ public class StockControlDto {
     private int minimum;
     private int current;
     private int percent;
+    private double listOfPrice;
     private Date createAt;
     private Date updateAt;
     private Long productId;

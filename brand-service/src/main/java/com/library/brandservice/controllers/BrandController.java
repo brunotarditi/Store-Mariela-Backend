@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,6 +34,11 @@ public class BrandController extends CommonController<Brand, BrandDto, IBrandSer
         brandOptional.get().setCreateAt(brandOptional.get().getCreateAt());
         brandOptional.get().setUpdateAt(new Date());
         return new ResponseEntity<>(commonService.save(brandOptional.get()), HttpStatus.OK);
+    }
+
+    @PostMapping("/save/all")
+    public ResponseEntity<?> saveAll(@Valid @RequestBody List<BrandDto> brandDtos, BindingResult result) {
+        return new ResponseEntity<>(commonService.saveAll(brandDtos), HttpStatus.OK);
     }
 
     @GetMapping("/all/{brandId}")

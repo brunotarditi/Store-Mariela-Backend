@@ -45,6 +45,7 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
         return new ResponseEntity<>(commonService.save(productOptional.get()), HttpStatus.OK);
     }
 
+
     @GetMapping("/byBrand/{brandId}")
     public ResponseEntity<?> getProductsByBrandId(@PathVariable Long brandId) {
         List<ProductDto> products = this.commonService.getProductBrandById(brandId);
@@ -52,9 +53,9 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
     }
 
     @CircuitBreaker(name = "allCB", fallbackMethod = "fallbackGetAll")
-    @GetMapping("/withStocksAndPurchases/{productId}")
-    public ResponseEntity<?> getProductsWithStocksAndPurchases(@PathVariable Long productId) {
-        Map<String, Object> results = this.commonService.getProductsWithStocksAndPurchases(productId);
+    @GetMapping("/withStockAndPurchases/{productId}")
+    public ResponseEntity<?> getProductWithStockAndPurchases(@PathVariable Long productId) {
+        Map<String, Object> results = this.commonService.getProductWithStockAndPurchases(productId);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
@@ -72,5 +73,11 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
 
     private ResponseEntity<?> fallbackSavePurchase(@PathVariable Long productId, @RequestBody HistoricalPurchaseDto purchase, RuntimeException e) {
         return new ResponseEntity<>("No pudo añadirse la compra.", HttpStatus.OK);
+    }
+
+    @GetMapping("/withStock")
+    public ResponseEntity<?> getProductsWithStock() {
+        Map<String, Object> results = this.commonService.getAllProductsWithStocks();
+        return new ResponseEntity<>(results, HttpStatus.OK);
     }
 }

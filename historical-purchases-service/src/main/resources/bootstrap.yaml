@@ -6,7 +6,7 @@ spring:
       enabled: true
       uri: http://localhost:8081
 
-  # Mysql config
+  # Postgresql config
   datasource:
     url: jdbc:postgresql://localhost:5432/librarydb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: postgres

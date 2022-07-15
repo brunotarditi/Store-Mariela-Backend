@@ -62,12 +62,14 @@ public class ProductService extends CommonService<Product, IProductRepository, P
                 stockControl.setMinimum(purchaseStock.getMinimum());
                 stockControl.setCurrent(purchaseStock.getQuantity());
                 stockControl.setPercent(purchaseStock.getPercent());
+                stockControl.setListOfPrice(purchaseStock.getListOfPrice());
                 this.stockControlFeignClient.save(stockControl);
 
             } else {
                 stockControl.setMinimum(purchaseStock.getMinimum());
                 stockControl.setCurrent(stockControl.getCurrent() + purchaseStock.getQuantity());
                 stockControl.setPercent(purchaseStock.getPercent());
+                stockControl.setListOfPrice(purchaseStock.getListOfPrice());
                 stockControl.setCreateAt(stockControl.getCreateAt());
                 stockControl.setUpdateAt(new Date());
                 stockControl.setProductId(productId);
@@ -79,7 +81,7 @@ public class ProductService extends CommonService<Product, IProductRepository, P
     }
 
     @Override
-    public Map<String, Object> getProductsWithStocksAndPurchases(Long productId) {
+    public Map<String, Object> getProductWithStockAndPurchases(Long productId) {
         Map<String, Object> results = new HashMap<>();
         Optional<ProductDto> productDto = this.findById(productId);
         if (productDto.isEmpty()) {
@@ -103,8 +105,16 @@ public class ProductService extends CommonService<Product, IProductRepository, P
     }
 
     @Override
-    public Map<String, Object> getAllProductsWithStocksAndPurchases() {
-        return null;
+    public Map<String, Object> getAllProductsWithStocks() {
+        Map<String, Object> results = new HashMap<>();
+        List<ProductDto> productDtos = this.findAll();
+        productDtos.forEach(p -> stockControlFeignClient.getStockControlByProductId(p.getId())
+                .ifPresent(stockControl -> {
+                    p.setStockControl(stockControl);
+                    p.setPrice(stockControl.getListOfPrice() * ((float) stockControl.getPercent() / 100) + stockControl.getListOfPrice());
+                }));
+        results.put("Products", productDtos);
+        return results;
     }
 
 }

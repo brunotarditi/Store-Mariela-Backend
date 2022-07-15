@@ -18,7 +18,6 @@ public class ProductDto {
     private Long id;
     @NotBlank
     private String name;
-    @NotNull
     private Double price;
     @NotNull
     private Long brandId;
@@ -26,4 +25,5 @@ public class ProductDto {
     private Long categoryId;
     private Date createAt;
     private Date updateAt;
+    private StockControlDto stockControl;
 }

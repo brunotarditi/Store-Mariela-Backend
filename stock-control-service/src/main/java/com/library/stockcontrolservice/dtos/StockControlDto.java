@@ -19,6 +19,7 @@ public class StockControlDto {
     private Integer current;
     @NotNull
     private Integer percent;
+    private double listOfPrice;
     private Date createAt;
     private Date updateAt;
     private Long productId;

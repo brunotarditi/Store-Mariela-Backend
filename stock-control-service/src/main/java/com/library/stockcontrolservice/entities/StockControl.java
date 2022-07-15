@@ -31,6 +31,9 @@ public class StockControl {
     @Column(name = "sale_percentage")
     private int percent;
 
+    @Column(name = "list_price")
+    private double listOfPrice;
+
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private Date createAt;

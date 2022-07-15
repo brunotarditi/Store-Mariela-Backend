@@ -20,8 +20,8 @@ import java.util.Optional;
 public class HistoricalPurchaseController extends CommonController<HistoricalPurchase, HistoricalPurchaseDto, IHistoricalPurchaseService> {
 
     @Autowired
-    public HistoricalPurchaseController(IHistoricalPurchaseService commonService) {
-        super(commonService);
+    public HistoricalPurchaseController(IHistoricalPurchaseService purchaseService) {
+        super(purchaseService);
     }
 
     @PutMapping("/{id}")
