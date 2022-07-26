@@ -28,6 +28,9 @@ public class HistoricalPurchase {
     @Column(name = "cost_price")
     private double costPrice;
 
+    @Column(name = "has_iva")
+    private boolean hasIva;
+
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private Date createAt;

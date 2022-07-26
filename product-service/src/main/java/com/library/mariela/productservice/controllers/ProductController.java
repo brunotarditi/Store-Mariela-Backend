@@ -71,7 +71,7 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
         return new ResponseEntity<>(this.commonService.savePurchase(productId, purchaseStock), HttpStatus.OK);
     }
 
-    private ResponseEntity<?> fallbackSavePurchase(@PathVariable Long productId, @RequestBody HistoricalPurchaseDto purchase, RuntimeException e) {
+    private ResponseEntity<?> fallbackSavePurchase(@PathVariable Long productId, @RequestBody PurchaseStockControlDto purchase, RuntimeException e) {
         return new ResponseEntity<>("No pudo añadirse la compra.", HttpStatus.OK);
     }
 

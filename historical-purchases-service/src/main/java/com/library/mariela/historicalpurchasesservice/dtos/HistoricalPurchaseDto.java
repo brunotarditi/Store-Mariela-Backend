@@ -15,6 +15,7 @@ public class HistoricalPurchaseDto {
     private Long id;
     private int quantity;
     private double costPrice;
+    private boolean hasIva;
     private Date createAt;
     private Date updateAt;
     private Long productId;

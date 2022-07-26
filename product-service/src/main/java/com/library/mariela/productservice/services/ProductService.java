@@ -46,6 +46,7 @@ public class ProductService extends CommonService<Product, IProductRepository, P
             purchaseDto.setCostPrice(purchaseStock.getCostPrice());
         else
             purchaseDto.setCostPrice(purchaseStock.getCostPrice() * 1.21);
+        purchaseDto.setHasIva(purchaseStock.isHasIva());
         purchaseDto.setQuantity(purchaseStock.getQuantity());
         purchaseDto.setProductId(productId);
         this.purchaseFeignClient.save(purchaseDto);
@@ -62,14 +63,14 @@ public class ProductService extends CommonService<Product, IProductRepository, P
                 stockControl.setMinimum(purchaseStock.getMinimum());
                 stockControl.setCurrent(purchaseStock.getQuantity());
                 stockControl.setPercent(purchaseStock.getPercent());
-                stockControl.setListOfPrice(purchaseStock.getListOfPrice());
+                stockControl.setListOfPrice(purchaseStock.getCostPrice());
                 this.stockControlFeignClient.save(stockControl);
 
             } else {
-                stockControl.setMinimum(purchaseStock.getMinimum());
+                stockControl.setMinimum(stockControl.getMinimum());
                 stockControl.setCurrent(stockControl.getCurrent() + purchaseStock.getQuantity());
-                stockControl.setPercent(purchaseStock.getPercent());
-                stockControl.setListOfPrice(purchaseStock.getListOfPrice());
+                stockControl.setPercent(stockControl.getPercent());
+                stockControl.setListOfPrice(purchaseStock.getCostPrice());
                 stockControl.setCreateAt(stockControl.getCreateAt());
                 stockControl.setUpdateAt(new Date());
                 stockControl.setProductId(productId);
