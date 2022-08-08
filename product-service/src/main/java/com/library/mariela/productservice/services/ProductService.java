@@ -89,6 +89,10 @@ public class ProductService extends CommonService<Product, IProductRepository, P
             results.put("Message", "No existe el producto.");
             return results;
         }
+        if (productDto.get().isDelete()) {
+            results.put("Message", "No existe el producto.");
+            return results;
+        }
         results.put("Product", productDto);
         List<HistoricalPurchaseDto> purchases = purchaseFeignClient.getHistoricalPurchaseByProductId(productId);
         if (purchases.isEmpty()) {
@@ -108,13 +112,18 @@ public class ProductService extends CommonService<Product, IProductRepository, P
     @Override
     public Map<String, Object> getAllProductsWithStocks() {
         Map<String, Object> results = new HashMap<>();
-        List<ProductDto> productDtos = this.findAll();
-        productDtos.forEach(p -> stockControlFeignClient.getStockControlByProductId(p.getId())
-                .ifPresent(stockControl -> {
-                    p.setStockControl(stockControl);
-                    p.setPrice(stockControl.getListOfPrice() * ((float) stockControl.getPercent() / 100) + stockControl.getListOfPrice());
-                }));
-        results.put("Products", productDtos);
+        List<ProductDto> allProductsDtos = this.findAll();
+        List<ProductDto> productsDtosAvailable = allProductsDtos
+                .stream()
+                .filter(productDto -> !productDto.isDelete())
+                .collect(Collectors.toList());
+        productsDtosAvailable
+                .forEach(p -> stockControlFeignClient.getStockControlByProductId(p.getId())
+                        .ifPresent(stockControl -> {
+                            p.setStockControl(stockControl);
+                            p.setPrice(stockControl.getListOfPrice() * ((float) stockControl.getPercent() / 100) + stockControl.getListOfPrice());
+                        }));
+        results.put("Products", productsDtosAvailable);
         return results;
     }
 

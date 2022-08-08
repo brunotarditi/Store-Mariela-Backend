@@ -45,6 +45,15 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
         return new ResponseEntity<>(commonService.save(productOptional.get()), HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+        Optional<ProductDto> productDto = commonService.findById(id);
+        if (productDto.isEmpty())
+            return new ResponseEntity<>("Producto no encontrado.", HttpStatus.NOT_FOUND);
+        productDto.get().setDelete(true);
+
+        return new ResponseEntity<>(commonService.save(productDto.get()), HttpStatus.OK);
+    }
 
     @GetMapping("/byBrand/{brandId}")
     public ResponseEntity<?> getProductsByBrandId(@PathVariable Long brandId) {

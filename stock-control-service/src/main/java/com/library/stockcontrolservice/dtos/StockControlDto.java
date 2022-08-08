@@ -1,18 +1,17 @@
 package com.library.stockcontrolservice.dtos;
 
+import com.library.commonsservice.dtos.AbstractDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class StockControlDto {
-    private Long id;
+public class StockControlDto extends AbstractDto {
     @NotNull
     private Integer minimum;
     @NotNull
@@ -20,7 +19,5 @@ public class StockControlDto {
     @NotNull
     private Integer percent;
     private double listOfPrice;
-    private Date createAt;
-    private Date updateAt;
     private Long productId;
 }

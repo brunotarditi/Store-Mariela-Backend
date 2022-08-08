@@ -1,5 +1,6 @@
 package com.library.categoryservice.dtos;
 
+import com.library.commonsservice.dtos.AbstractDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CategoryDto {
-    private Long id;
+public class CategoryDto extends AbstractDto {
     @NotBlank
     private String name;
-    private Date createAt;
-    private Date updateAt;
 }

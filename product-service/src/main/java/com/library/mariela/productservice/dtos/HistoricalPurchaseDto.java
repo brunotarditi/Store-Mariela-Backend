@@ -1,5 +1,6 @@
 package com.library.mariela.productservice.dtos;
 
+import com.library.commonsservice.dtos.AbstractDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,12 +12,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-public class HistoricalPurchaseDto {
-    private Long id;
+public class HistoricalPurchaseDto extends AbstractDto {
     private int quantity;
     private double costPrice;
     private boolean hasIva;
-    private Date createAt;
-    private Date updateAt;
     private Long productId;
 }
