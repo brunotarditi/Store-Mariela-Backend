@@ -15,4 +15,5 @@ public interface IProductService extends ICommonService<Product, ProductDto> {
     PurchaseStockControlDto savePurchase(Long productId, PurchaseStockControlDto purchaseStock);
     Map<String, Object> getProductWithStockAndPurchases(Long productId);
     Map<String, Object> getAllProductsWithStocks();
+    String deleteProduct(Long productId);
 }

@@ -1,9 +1,17 @@
 package com.library.commonsservice.messages;
 
 public class Message {
-    private String text;
+    private String message;
 
-    public Message(String text) {
-        this.text = text;
+    public Message(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -1,10 +1,10 @@
 package com.library.mariela.productservice.controllers;
 
 import com.library.commonsservice.controllers.CommonController;
+import com.library.commonsservice.messages.Message;
 import com.library.mariela.productservice.dtos.ProductDto;
 import com.library.mariela.productservice.dtos.PurchaseStockControlDto;
 import com.library.mariela.productservice.entities.Product;
-import com.library.mariela.productservice.dtos.HistoricalPurchaseDto;
 import com.library.mariela.productservice.services.IProductService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,18 +47,13 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
-        Optional<ProductDto> productDto = commonService.findById(id);
-        if (productDto.isEmpty())
-            return new ResponseEntity<>("Producto no encontrado.", HttpStatus.NOT_FOUND);
-        productDto.get().setDelete(true);
-
-        return new ResponseEntity<>(commonService.save(productDto.get()), HttpStatus.OK);
+        return new ResponseEntity<>(new Message(commonService.deleteProduct(id)), HttpStatus.OK);
     }
 
     @GetMapping("/byBrand/{brandId}")
     public ResponseEntity<?> getProductsByBrandId(@PathVariable Long brandId) {
-        List<ProductDto> products = this.commonService.getProductBrandById(brandId);
-        return ResponseEntity.ok(products);
+        List<ProductDto> productsDtos = this.commonService.getProductBrandById(brandId);
+        return ResponseEntity.ok(productsDtos);
     }
 
     @CircuitBreaker(name = "allCB", fallbackMethod = "fallbackGetAll")
@@ -69,7 +64,7 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
     }
 
     private ResponseEntity<?> fallbackGetAll(@PathVariable Long productId, RuntimeException e) {
-        return new ResponseEntity<>("Este producto no tiene disponible el stock y las compras.", HttpStatus.OK);
+        return new ResponseEntity<>(new Message("Este producto no tiene disponible el stock y las compras."), HttpStatus.OK);
     }
 
     @CircuitBreaker(name = "purchasesCB", fallbackMethod = "fallbackSavePurchase")
@@ -81,7 +76,7 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
     }
 
     private ResponseEntity<?> fallbackSavePurchase(@PathVariable Long productId, @RequestBody PurchaseStockControlDto purchase, RuntimeException e) {
-        return new ResponseEntity<>("No pudo añadirse la compra.", HttpStatus.OK);
+        return new ResponseEntity<>(new Message("No pudo añadirse la compra."), HttpStatus.OK);
     }
 
     @GetMapping("/withStock")

@@ -12,21 +12,21 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class AbstractEntity {
 
-    private static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
-    private Date createAt;
+    protected Date createAt;
 
     @Column(name = "update_at")
     @Temporal(TemporalType.DATE)
-    private Date updateAt;
+    protected Date updateAt;
 
     @Column(name = "is_delete")
-    private boolean isDelete;
+    protected boolean isDelete;
 
     @PrePersist
     public void createAt(){

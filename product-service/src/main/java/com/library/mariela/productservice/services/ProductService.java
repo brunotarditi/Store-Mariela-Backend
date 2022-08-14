@@ -127,4 +127,19 @@ public class ProductService extends CommonService<Product, IProductRepository, P
         return results;
     }
 
+    @Override
+    public String deleteProduct(Long productId){
+        Optional<ProductDto> productDto = this.findById(productId);
+        if (productDto.isEmpty())
+            return "Producto no encontrado.";
+        if (productDto.get().isDelete())
+            return "No existe el producto.";
+        Optional<StockControlDto> stock = stockControlFeignClient.getStockControlByProductId(productId);
+        if (stock.isPresent())
+            return  "Este producto cuenta con stock, no puede eliminarse.";
+        productDto.get().setDelete(true);
+        this.save(productDto.get());
+        return "Producto eliminado con éxito.";
+    }
+
 }
