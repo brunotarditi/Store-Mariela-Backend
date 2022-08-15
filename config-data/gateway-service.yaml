@@ -46,3 +46,11 @@ spring:
           uri: lb://historical-purchase-service
           predicates:
             - Path=/api/purchases/**
+        - id: orders-service
+          uri: lb://orders-service
+          predicates:
+            - Path=/api/orders/**
+        - id: orders-details-service
+          uri: lb://orders-details-service
+          predicates:
+            - Path=/api/ordersDetails/**
