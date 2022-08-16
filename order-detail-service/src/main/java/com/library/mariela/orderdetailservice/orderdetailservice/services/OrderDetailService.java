@@ -7,10 +7,22 @@ import com.library.mariela.orderdetailservice.orderdetailservice.entities.OrderD
 import com.library.mariela.orderdetailservice.orderdetailservice.repositories.IOrderDetailRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class OrderDetailService extends CommonService<OrderDetail, IOrderDetailRepository, OrderDetailDto> implements IOrderDetailService {
 
     public OrderDetailService(IOrderDetailRepository repository, IFactory<OrderDetail, OrderDetailDto> iFactory) {
         super(repository, iFactory);
+    }
+
+    @Override
+    public List<OrderDetailDto> getOrderDetailByIdOrder(Long orderId) {
+        List<OrderDetail> orderDetails = this.repository.findOrderDetailByIdOrder(orderId);
+        return orderDetails
+                .stream()
+                .map(iFactory::createDto)
+                .collect(Collectors.toList());
     }
 }

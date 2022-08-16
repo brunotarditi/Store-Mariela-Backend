@@ -5,16 +5,14 @@ import com.library.mariela.orderservice.orderservice.dtos.OrderDto;
 import com.library.mariela.orderservice.orderservice.entities.Order;
 import com.library.mariela.orderservice.orderservice.enums.Status;
 import com.library.mariela.orderservice.orderservice.services.IOrderService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.Date;
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -26,30 +24,25 @@ public class OrderController extends CommonController<Order, OrderDto, IOrderSer
         super(commonService);
     }
 
-    @PutMapping("/id/{id}/status/{status}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestParam Status status) {
-        Optional<OrderDto> orderDto = commonService.findById(id);
-        if (orderDto.isEmpty())
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestParam OrderDto orderDto) {
+        Optional<OrderDto> orderDtoOptional = commonService.findById(id);
+        if (orderDtoOptional.isEmpty())
             return new ResponseEntity<>("Pedido no encontrado.", HttpStatus.NOT_FOUND);
-        switch (status){
-            case DENY:
-                orderDto.get().setStatus(Status.DENY);
-                break;
-            case OK:
-                orderDto.get().setStatus(Status.OK);
-                break;
-            case PREPARATION:
-                orderDto.get().setStatus(Status.PREPARATION);
-                break;
-            case CANCELLED:
-                orderDto.get().setStatus(Status.CANCELLED);
-                break;
-            case DELIVERED:
-                orderDto.get().setStatus(Status.DELIVERED);
-                break;
-        }
-        return new ResponseEntity<>(commonService.save(orderDto.get()), HttpStatus.OK);
+        orderDtoOptional.get().setStatus(orderDto.getStatus());
+        return new ResponseEntity<>(commonService.save(orderDtoOptional.get()), HttpStatus.OK);
     }
 
+    @GetMapping("/all/{orderId}")
+    public ResponseEntity<?> getAll(@PathVariable Long orderId) {
+        Map<String, Object> results = this.commonService.getOrderWithOrderDetails(orderId);
+        return new ResponseEntity<>(results, HttpStatus.OK);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<?> getStatus(){
+        List<Status> statusList = Arrays.asList(Status.values());
+        return new ResponseEntity<>(statusList, HttpStatus.OK);
+    }
 
 }

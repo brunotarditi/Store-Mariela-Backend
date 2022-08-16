@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order extends AbstractEntity {
 
     @Transient
