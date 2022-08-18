@@ -8,4 +8,6 @@ import java.util.Map;
 
 public interface IOrderService extends ICommonService<Order, OrderDto> {
     Map<String, Object> getOrderWithOrderDetails(Long orderId);
+    Map<String, Object> getAllOrdersWithDetails();
+    String deleteOrder(Long orderId);
 }

@@ -14,4 +14,5 @@ public class OrderDetailDto extends AbstractDto {
     private int quantity;
     private double subtotal;
     private Long idOrder;
+    private Long idProduct;
 }

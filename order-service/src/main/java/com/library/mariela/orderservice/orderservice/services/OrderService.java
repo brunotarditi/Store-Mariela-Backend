@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService extends CommonService<Order, IOrderRepository, OrderDto> implements IOrderService {
@@ -43,5 +44,38 @@ public class OrderService extends CommonService<Order, IOrderRepository, OrderDt
             results.put("Details", orderDetailDtos);
         }
         return results;
+    }
+
+    @Override
+    public Map<String, Object> getAllOrdersWithDetails() {
+        Map<String, Object> results = new HashMap<>();
+        List<OrderDto> allProductsDtos = this.findAll();
+        /*List<OrderDto> productsDtosAvailable = allProductsDtos
+                .stream()
+                .filter(productDto -> !productDto.isDelete())
+                .collect(Collectors.toList());
+        productsDtosAvailable
+                .forEach(p -> stockControlFeignClient.getStockControlByProductId(p.getId())
+                        .ifPresent(stockControl -> {
+                            p.setStockControl(stockControl);
+                            p.setPrice(stockControl.getListOfPrice() * ((float) stockControl.getPercent() / 100) + stockControl.getListOfPrice());
+                        }));*/
+        //results.put("Products", productsDtosAvailable);
+        return results;
+    }
+
+    @Override
+    public String deleteOrder(Long orderId){
+        Optional<OrderDto> orderDto = this.findById(orderId);
+        if (orderDto.isEmpty())
+            return "Pedido no encontrado.";
+        if (orderDto.get().isDelete())
+            return "No existe el pedido.";
+        List<OrderDetailDto> detailDto = orderFeignClient.getOrderDetailsByOrderId(orderId);
+        if (!detailDto.isEmpty())
+            return  "Este pedido cuenta tiene detalles, no puede eliminarse.";
+        orderDto.get().setDelete(true);
+        this.save(orderDto.get());
+        return "Pedido eliminado con éxito.";
     }
 }

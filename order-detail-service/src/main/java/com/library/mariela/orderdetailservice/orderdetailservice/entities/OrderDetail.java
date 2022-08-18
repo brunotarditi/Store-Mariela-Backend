@@ -24,5 +24,7 @@ public class OrderDetail extends AbstractEntity {
     private double subtotal;
     @Column(name = "id_order")
     private Long idOrder;
+    @Column(name = "id_product")
+    private Long idProduct;
 
 }
