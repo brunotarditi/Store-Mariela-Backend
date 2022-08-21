@@ -39,6 +39,15 @@ public class ProductService extends CommonService<Product, IProductRepository, P
     }
 
     @Override
+    public List<ProductDto> getProductCategoryById(Long categoryId) {
+        List<Product> products = this.repository.findProductByCategoryId(categoryId);
+        return products
+                .stream()
+                .map(iFactory::createDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public PurchaseStockControlDto savePurchase(Long productId, PurchaseStockControlDto purchaseStock) {
         Optional<StockControlDto> stock = this.stockControlFeignClient.getStockControlByProductId(productId);
         HistoricalPurchaseDto purchaseDto = new HistoricalPurchaseDto();
@@ -89,7 +98,7 @@ public class ProductService extends CommonService<Product, IProductRepository, P
             results.put("Message", "No existe el producto.");
             return results;
         }
-        if (productDto.get().isDelete()) {
+        if (productDto.get().isEnabled()) {
             results.put("Message", "No existe el producto.");
             return results;
         }
@@ -115,7 +124,7 @@ public class ProductService extends CommonService<Product, IProductRepository, P
         List<ProductDto> allProductsDtos = this.findAll();
         List<ProductDto> productsDtosAvailable = allProductsDtos
                 .stream()
-                .filter(productDto -> !productDto.isDelete())
+                .filter(productDto -> !productDto.isEnabled())
                 .collect(Collectors.toList());
         productsDtosAvailable
                 .forEach(p -> stockControlFeignClient.getStockControlByProductId(p.getId())
@@ -128,18 +137,8 @@ public class ProductService extends CommonService<Product, IProductRepository, P
     }
 
     @Override
-    public String deleteProduct(Long productId){
-        Optional<ProductDto> productDto = this.findById(productId);
-        if (productDto.isEmpty())
-            return "Producto no encontrado.";
-        if (productDto.get().isDelete())
-            return "No existe el producto.";
-        Optional<StockControlDto> stock = stockControlFeignClient.getStockControlByProductId(productId);
-        if (stock.isPresent())
-            return  "Este producto cuenta con stock, no puede eliminarse.";
-        productDto.get().setDelete(true);
-        this.save(productDto.get());
-        return "Producto eliminado con éxito.";
+    public Optional<StockControlDto> getStockControl(Long productId) {
+        return stockControlFeignClient.getStockControlByProductId(productId);
     }
 
 }

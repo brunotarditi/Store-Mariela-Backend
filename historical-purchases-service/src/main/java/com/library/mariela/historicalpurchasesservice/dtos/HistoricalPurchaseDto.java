@@ -1,6 +1,6 @@
 package com.library.mariela.historicalpurchasesservice.dtos;
 
-import com.library.commonsservice.dtos.AbstractDto;
+import com.library.commonsservice.dtos.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class HistoricalPurchaseDto extends AbstractDto {
+public class HistoricalPurchaseDto extends BaseDto {
 
     private int quantity;
     private double costPrice;

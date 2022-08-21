@@ -1,6 +1,6 @@
 package com.library.brandservice.entities;
 
-import com.library.commonsservice.entities.AbstractEntity;
+import com.library.commonsservice.entities.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Setter
 @Entity
 @Table(name = "brands")
-public class Brand  extends AbstractEntity implements Serializable {
+public class Brand  extends BaseEntity implements Serializable {
 
     @Column(name = "name")
     private String name;

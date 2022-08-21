@@ -14,7 +14,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class AbstractEntity {
+public class BaseEntity {
 
     protected static final long serialVersionUID = 1L;
     @Id
@@ -29,8 +29,8 @@ public abstract class AbstractEntity {
     @Temporal(TemporalType.DATE)
     protected Date updateAt;
 
-    @Column(name = "is_delete")
-    protected boolean isDelete;
+    @Column(name = "is_enabled")
+    protected boolean isEnabled;
 
     @PrePersist
     public void createAt(){

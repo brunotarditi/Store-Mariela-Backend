@@ -1,6 +1,6 @@
 package com.library.stockcontrolservice.dtos;
 
-import com.library.commonsservice.dtos.AbstractDto;
+import com.library.commonsservice.entities.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Getter
 @Setter
-public class StockControlDto extends AbstractDto {
+public class StockControlDto extends BaseEntity {
     @NotNull
     private Integer minimum;
     @NotNull

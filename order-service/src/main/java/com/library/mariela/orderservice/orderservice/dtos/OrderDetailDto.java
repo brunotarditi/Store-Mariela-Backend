@@ -1,6 +1,6 @@
 package com.library.mariela.orderservice.orderservice.dtos;
 
-import com.library.commonsservice.dtos.AbstractDto;
+import com.library.commonsservice.dtos.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class OrderDetailDto extends AbstractDto {
+public class OrderDetailDto extends BaseDto {
     private int quantity;
     private double subtotal;
-    private int idOrder;
+    private Long idOrder;
+    private Long idProduct;
 }

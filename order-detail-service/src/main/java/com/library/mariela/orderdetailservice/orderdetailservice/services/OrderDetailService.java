@@ -25,4 +25,14 @@ public class OrderDetailService extends CommonService<OrderDetail, IOrderDetailR
                 .map(iFactory::createDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<OrderDetailDto> getAllOrdersDetailInactive() {
+        List<OrderDetail> orderDetails = this.repository.findOrderDetailInactive();
+        return orderDetails
+                .stream()
+                .map(iFactory::createDto)
+                .collect(Collectors.toList());
+    }
+
 }

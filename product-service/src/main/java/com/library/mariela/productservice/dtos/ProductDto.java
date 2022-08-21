@@ -1,6 +1,6 @@
 package com.library.mariela.productservice.dtos;
 
-import com.library.commonsservice.dtos.AbstractDto;
+import com.library.commonsservice.dtos.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ProductDto extends AbstractDto {
+public class ProductDto extends BaseDto {
 
     @NotBlank
     private String name;

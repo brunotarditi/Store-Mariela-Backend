@@ -1,6 +1,6 @@
 package com.library.stockcontrolservice.entities;
 
-import com.library.commonsservice.entities.AbstractEntity;
+import com.library.commonsservice.entities.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @Entity
 @Table(name = "stock_control")
-public class StockControl extends AbstractEntity implements Serializable {
+public class StockControl extends BaseEntity implements Serializable {
 
     @Column(name = "minimum")
     private int minimum;

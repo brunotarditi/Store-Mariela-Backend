@@ -1,6 +1,6 @@
 package com.library.mariela.productservice.dtos;
 
-import com.library.commonsservice.dtos.AbstractDto;
+import com.library.commonsservice.dtos.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class PurchaseStockControlDto extends AbstractDto {
+public class PurchaseStockControlDto extends BaseDto {
     private int minimum;
     private int current;
     private int percent;

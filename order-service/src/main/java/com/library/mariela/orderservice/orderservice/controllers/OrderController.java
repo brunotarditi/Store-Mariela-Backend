@@ -1,6 +1,8 @@
 package com.library.mariela.orderservice.orderservice.controllers;
 
 import com.library.commonsservice.controllers.CommonController;
+import com.library.commonsservice.messages.Message;
+import com.library.mariela.orderservice.orderservice.dtos.OrderDetailDto;
 import com.library.mariela.orderservice.orderservice.dtos.OrderDto;
 import com.library.mariela.orderservice.orderservice.entities.Order;
 import com.library.mariela.orderservice.orderservice.enums.Status;
@@ -39,10 +41,31 @@ public class OrderController extends CommonController<Order, OrderDto, IOrderSer
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
-    @GetMapping("/status")
-    public ResponseEntity<?> getStatus(){
-        List<Status> statusList = Arrays.asList(Status.values());
-        return new ResponseEntity<>(statusList, HttpStatus.OK);
+    @GetMapping("/allEnabledWithDetails")
+    public ResponseEntity<?> getAllOrdersActiveWithDetails(){
+        Map<String, Object> results = this.commonService.getAllOrdersWithDetails();
+        return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
+    @PostMapping("/saveOrderDetail/{orderId}")
+    public ResponseEntity<?> saveOrderDetail(@PathVariable Long orderId, @RequestBody OrderDetailDto orderDetailDto) throws Exception {
+        if (this.commonService.findById(orderId).isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(this.commonService.saveOrderDetail(orderId, orderDetailDto));
+    }
+
+    @DeleteMapping("/delete/{orderId}")
+    public ResponseEntity<?> deleteOrder(@PathVariable Long orderId){
+        Optional<OrderDto> orderDto = this.commonService.findById(orderId);
+        if (orderDto.isEmpty())
+            return new ResponseEntity<>(new Message("Pedido no encontrado"), HttpStatus.NOT_FOUND);
+        if (orderDto.get().isEnabled())
+            return new ResponseEntity<>(new Message("No existe el pedido"), HttpStatus.BAD_REQUEST);
+        List<OrderDetailDto> detailDto = this.commonService.getOrderDetailsByOrderId(orderId);
+        if (!detailDto.isEmpty())
+            return new ResponseEntity<>(new Message("Este pedido tiene detalles, no puede eliminarse"), HttpStatus.BAD_REQUEST);
+        orderDto.get().setEnabled(false);
+        this.commonService.save(orderDto.get());
+        return new ResponseEntity<>(new Message("Pedido eliminado"), HttpStatus.OK);
+    }
 }

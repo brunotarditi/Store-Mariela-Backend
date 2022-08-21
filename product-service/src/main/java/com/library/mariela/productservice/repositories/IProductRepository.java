@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface IProductRepository extends PagingAndSortingRepository<Product, Long> {
-
+    List<Product> findProductByCategoryId(Long categoryId);
     List<Product> findProductByBrandId(Long brandId);
 }

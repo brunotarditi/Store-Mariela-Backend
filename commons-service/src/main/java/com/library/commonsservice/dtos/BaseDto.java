@@ -11,9 +11,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-public abstract class AbstractDto {
+public class BaseDto {
     protected Long id;
     protected Date createAt;
     protected Date updateAt;
-    protected boolean isDelete;
+    protected boolean isEnabled;
 }

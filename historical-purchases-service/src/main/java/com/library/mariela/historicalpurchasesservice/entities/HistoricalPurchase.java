@@ -1,6 +1,6 @@
 package com.library.mariela.historicalpurchasesservice.entities;
 
-import com.library.commonsservice.entities.AbstractEntity;
+import com.library.commonsservice.entities.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @Entity
 @Table(name = "historical_purchase")
-public class HistoricalPurchase extends AbstractEntity implements Serializable {
+public class HistoricalPurchase extends BaseEntity implements Serializable {
 
     @Column(name = "quantity")
     private int quantity;

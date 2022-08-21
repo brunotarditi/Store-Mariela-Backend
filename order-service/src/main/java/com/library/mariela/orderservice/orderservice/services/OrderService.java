@@ -9,11 +9,7 @@ import com.library.mariela.orderservice.orderservice.factories.OrderFactory;
 import com.library.mariela.orderservice.orderservice.repositories.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,33 +45,32 @@ public class OrderService extends CommonService<Order, IOrderRepository, OrderDt
     @Override
     public Map<String, Object> getAllOrdersWithDetails() {
         Map<String, Object> results = new HashMap<>();
-        List<OrderDto> allProductsDtos = this.findAll();
-        /*List<OrderDto> productsDtosAvailable = allProductsDtos
+        List<Order> ordersIsEnabled = repository.findOrderEnabled();
+        List<OrderDetailDto> orderDetailDtos = orderFeignClient.getOrderDetailsAvailable();
+        List<OrderDto> orderDtosAvailable = ordersIsEnabled
                 .stream()
-                .filter(productDto -> !productDto.isDelete())
+                .map(iFactory::createDto)
                 .collect(Collectors.toList());
-        productsDtosAvailable
-                .forEach(p -> stockControlFeignClient.getStockControlByProductId(p.getId())
-                        .ifPresent(stockControl -> {
-                            p.setStockControl(stockControl);
-                            p.setPrice(stockControl.getListOfPrice() * ((float) stockControl.getPercent() / 100) + stockControl.getListOfPrice());
-                        }));*/
-        //results.put("Products", productsDtosAvailable);
+
+        for (OrderDto orderDto : orderDtosAvailable) {
+            for (OrderDetailDto orderDetailDto : orderDetailDtos){
+                if (orderDto.getId().equals(orderDetailDto.getIdOrder())){
+                    orderDto.getOrderDetailDtos().add(orderDetailDto);
+                }
+            }
+        }
+        results.put("Orders", orderDtosAvailable);
         return results;
     }
 
     @Override
-    public String deleteOrder(Long orderId){
-        Optional<OrderDto> orderDto = this.findById(orderId);
-        if (orderDto.isEmpty())
-            return "Pedido no encontrado.";
-        if (orderDto.get().isDelete())
-            return "No existe el pedido.";
-        List<OrderDetailDto> detailDto = orderFeignClient.getOrderDetailsByOrderId(orderId);
-        if (!detailDto.isEmpty())
-            return  "Este pedido cuenta tiene detalles, no puede eliminarse.";
-        orderDto.get().setDelete(true);
-        this.save(orderDto.get());
-        return "Pedido eliminado con éxito.";
+    public OrderDetailDto saveOrderDetail(Long orderId, OrderDetailDto orderDetailDto){
+        orderDetailDto.setIdOrder(orderId);
+        return this.orderFeignClient.save(orderDetailDto);
+    }
+
+    @Override
+    public List<OrderDetailDto> getOrderDetailsByOrderId(Long orderId) {
+        return orderFeignClient.getOrderDetailsByOrderId(orderId);
     }
 }

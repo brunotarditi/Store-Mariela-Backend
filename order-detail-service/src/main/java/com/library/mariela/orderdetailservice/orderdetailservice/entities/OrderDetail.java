@@ -1,6 +1,6 @@
 package com.library.mariela.orderdetailservice.orderdetailservice.entities;
 
-import com.library.commonsservice.entities.AbstractEntity;
+import com.library.commonsservice.entities.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @Table(name = "order_detail")
-public class OrderDetail extends AbstractEntity {
+public class OrderDetail extends BaseEntity {
 
     @Column(name = "quantity")
     private int quantity;

@@ -1,6 +1,6 @@
 package com.library.mariela.orderservice.orderservice.entities;
 
-import com.library.commonsservice.entities.AbstractEntity;
+import com.library.commonsservice.entities.BaseEntity;
 import com.library.mariela.orderservice.orderservice.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,11 +15,12 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "orders")
-public class Order extends AbstractEntity {
+public class Order extends BaseEntity {
 
     @Transient
     private double total;
 
     @Column(name = "status")
     private Status status;
+
 }

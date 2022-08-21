@@ -1,10 +1,9 @@
 package com.library.mariela.productservice.entities;
 
-import com.library.commonsservice.entities.AbstractEntity;
+import com.library.commonsservice.entities.BaseEntity;
 import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,7 +11,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "products")
-public class Product extends AbstractEntity implements Serializable {
+public class Product extends BaseEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
