@@ -31,7 +31,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory <AuthFilter.Config>
                 return onError(exchange, HttpStatus.BAD_REQUEST);
             return webClient.build()
                     .post()
-                    .uri("http://authservice/auth/validate?token=" + chunks[1])
+                    .uri("http://auth-service/api/auth/validate?token=" + chunks[1])
                     .bodyValue(new RequestDto(exchange.getRequest().getPath().toString(), exchange.getRequest().getMethod().toString()))
                     .retrieve()
                     .bodyToMono(TokenDto.class)
