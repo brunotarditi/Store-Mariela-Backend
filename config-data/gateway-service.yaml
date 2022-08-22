@@ -62,3 +62,7 @@ spring:
           uri: lb://orders-details-service
           predicates:
             - Path=/api/ordersDetails/**
+        - id: auth-service
+            uri: lb://auth-service
+            predicates:
+              - Path=/api/auth/**

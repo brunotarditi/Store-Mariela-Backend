@@ -11,14 +11,14 @@ eureka:
 admin-paths:
   paths:
     -
-      uri: "/categories/save/{1}[1-9]+[0-9]*"
+      uri: "/api/categories/save"
       method: "POST"
     -
-      uri: "/brands/save/all/{1}[1-9]+[0-9]*"
+      uri: "/api/brands/save/all"
       method: "POST"
     -
-      uri: "/brands/save/{1}[1-9]+[0-9]*"
+      uri: "/api/brands/save"
       method: "POST"
     -
-      uri: "/products/save/{1}[1-9]+[0-9]*"
+      uri: "/api/products/save"
       method: "POST"
