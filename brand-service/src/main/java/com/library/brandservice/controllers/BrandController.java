@@ -59,7 +59,7 @@ public class BrandController extends CommonController<Brand, BrandDto, IBrandSer
         Optional<BrandDto> brandDto = this.commonService.findById(brandId);
         if (brandDto.isEmpty())
             return new ResponseEntity<>(new Message("Marca no encontrada"), HttpStatus.NOT_FOUND);
-        if (brandDto.get().isEnabled())
+        if (!brandDto.get().isEnabled())
             return new ResponseEntity<>(new Message("No existe la marca"), HttpStatus.BAD_REQUEST);
         List<ProductDto> productDtos = this.commonService.getProductByBrandId(brandId);
         if (!productDtos.isEmpty())

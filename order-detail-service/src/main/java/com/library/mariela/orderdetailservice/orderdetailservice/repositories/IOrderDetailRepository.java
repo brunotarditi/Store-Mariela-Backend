@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface IOrderDetailRepository extends PagingAndSortingRepository<OrderDetail, Long> {
     List<OrderDetail> findOrderDetailByIdOrder(Long orderId);
-    @Query(value = "SELECT od FROM OrderDetail od WHERE od.isInactive = true")
+    @Query(value = "SELECT od FROM OrderDetail od WHERE od.isEnabled = true")
     List<OrderDetail> findOrderDetailInactive();
 }

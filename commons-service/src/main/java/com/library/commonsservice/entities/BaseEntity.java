@@ -33,8 +33,10 @@ public class BaseEntity {
     protected boolean isEnabled;
 
     @PrePersist
-    public void createAt(){
+    public void defaultValues(){
+        this.isEnabled = true;
         this.createAt = new Date();
         this.updateAt = new Date();
     }
+
 }

@@ -32,14 +32,20 @@ spring:
           uri: lb://categories-service
           predicates:
             - Path=/api/categories/**
+          filters:
+            - AuthFilter
         - id: brands-service
           uri: lb://brands-service
           predicates:
             - Path=/api/brands/**
+          filters:
+            - AuthFilter
         - id: products-service
           uri: lb://products-service
           predicates:
             - Path=/api/products/**
+          filters:
+            - AuthFilter
         - id: stock-control-service
           uri: lb://stock-control-service
           predicates:

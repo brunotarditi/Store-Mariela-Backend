@@ -31,7 +31,7 @@ public class ProductService extends CommonService<Product, IProductRepository, P
 
     @Override
     public List<ProductDto> getProductBrandById(Long brandId) {
-        List<Product> products = this.repository.findProductByBrandId(brandId);
+        List<Product> products = this.repository.findProductByBrandIdEnabled(brandId);
         return products
                 .stream()
                 .map(iFactory::createDto)
@@ -40,7 +40,7 @@ public class ProductService extends CommonService<Product, IProductRepository, P
 
     @Override
     public List<ProductDto> getProductCategoryById(Long categoryId) {
-        List<Product> products = this.repository.findProductByCategoryId(categoryId);
+        List<Product> products = this.repository.findProductByCategoryIdEnabled(categoryId);
         return products
                 .stream()
                 .map(iFactory::createDto)

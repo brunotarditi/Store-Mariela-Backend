@@ -51,7 +51,7 @@ public class ProductController extends CommonController<Product, ProductDto, IPr
         Optional<ProductDto> productDto = this.commonService.findById(productId);
         if (productDto.isEmpty())
             return new ResponseEntity<>(new Message("Producto no encontrado"), HttpStatus.NOT_FOUND);
-        if (productDto.get().isEnabled())
+        if (!productDto.get().isEnabled())
             return new ResponseEntity<>(new Message("No existe el producto"), HttpStatus.BAD_REQUEST);
         Optional<StockControlDto> stock = this.commonService.getStockControl(productId);
         if (stock.isPresent())

@@ -52,7 +52,7 @@ public class CategoryController extends CommonController<Category, CategoryDto, 
         Optional<CategoryDto> categoryDto = this.commonService.findById(categoryId);
         if (categoryDto.isEmpty())
             return new ResponseEntity<>(new Message("Categoría no encontrada"), HttpStatus.NOT_FOUND);
-        if (categoryDto.get().isEnabled())
+        if (!categoryDto.get().isEnabled())
             return new ResponseEntity<>(new Message("No existe la categoría"), HttpStatus.BAD_REQUEST);
         List<ProductDto> productDtos = this.commonService.getProductByCategoryId(categoryId);
         if (!productDtos.isEmpty())

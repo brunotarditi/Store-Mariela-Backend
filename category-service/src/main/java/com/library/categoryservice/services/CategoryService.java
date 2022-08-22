@@ -39,7 +39,7 @@ public class CategoryService extends CommonService<Category, ICategoryRepository
         Map<String, Object> results = new HashMap<>();
         Optional<CategoryDto> categoryDto = this.findById(categoryId);
         if (categoryDto.isEmpty()) {
-            results.put("Message", "No existe la marca");
+            results.put("Message", "No existe la categoría");
             return results;
         }
         results.put("Category", categoryDto);
