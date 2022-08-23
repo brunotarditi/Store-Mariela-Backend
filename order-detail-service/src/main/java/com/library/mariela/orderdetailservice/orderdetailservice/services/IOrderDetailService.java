@@ -9,4 +9,7 @@ import java.util.List;
 public interface IOrderDetailService extends ICommonService<OrderDetail, OrderDetailDto> {
     List<OrderDetailDto> getOrderDetailByIdOrder(Long orderId);
     List<OrderDetailDto> getAllOrdersDetailInactive();
+    List<OrderDetail> saveAll(List<OrderDetailDto> orderDetailDtos);
+    OrderDetail addItemToOrderDetail(Long productId, OrderDetailDto orderDetailDto);
+    OrderDetail deleteItemToOrderDetail(Long id);
 }

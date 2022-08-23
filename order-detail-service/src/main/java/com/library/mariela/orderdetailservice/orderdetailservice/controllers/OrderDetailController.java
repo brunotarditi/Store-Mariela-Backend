@@ -7,8 +7,10 @@ import com.library.mariela.orderdetailservice.orderdetailservice.entities.OrderD
 import com.library.mariela.orderdetailservice.orderdetailservice.services.IOrderDetailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,27 @@ public class OrderDetailController extends CommonController<OrderDetail, OrderDe
     public ResponseEntity<?> getOrderDetailsActive() {
         List<OrderDetailDto> orderDetailDtos = this.commonService.getAllOrdersDetailInactive();
         return ResponseEntity.ok(orderDetailDtos);
+    }
+
+    @PostMapping("/save/all")
+    public ResponseEntity<?> saveAll(@Valid @RequestBody List<OrderDetailDto> orderDetailDtos, BindingResult result) {
+        return new ResponseEntity<>(commonService.saveAll(orderDetailDtos), HttpStatus.OK);
+    }
+
+    @PostMapping("/addToCart/{productId}")
+    public ResponseEntity<?> addItemToOrderDetail(@PathVariable Long productId, @RequestBody OrderDetailDto orderDetailDto) {
+        OrderDetail orderDetail = commonService.addItemToOrderDetail(productId, orderDetailDto);
+        if (orderDetail == null)
+            return new ResponseEntity<>(new Message("No pudo añadirse al carrito"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new Message("Añadido al carrito"), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteToCart/{id}")
+    public ResponseEntity<?> addItemToOrderDetail(@PathVariable Long id) {
+        OrderDetail orderDetail = commonService.deleteItemToOrderDetail(id);
+        if (orderDetail == null)
+            return new ResponseEntity<>(new Message("No pudo eliminarse del carrito"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new Message("Se quitó del carrito"), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{orderDetailId}")
