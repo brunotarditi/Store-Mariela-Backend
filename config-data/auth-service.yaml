@@ -22,3 +22,12 @@ admin-paths:
     -
       uri: "/api/products/save"
       method: "POST"
+    -
+      uri: "/api/stocks/save"
+      method: "POST"
+    -
+      uri: "/api/purchases/save"
+      method: "POST"
+    -
+      uri: "/api/orders/save"
+      method: "POST"

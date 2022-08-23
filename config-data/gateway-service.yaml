@@ -50,18 +50,26 @@ spring:
           uri: lb://stock-control-service
           predicates:
             - Path=/api/stocks/**
+          filters:
+            - AuthFilter
         - id: historical-purchase-service
           uri: lb://historical-purchase-service
           predicates:
             - Path=/api/purchases/**
+          filters:
+            - AuthFilter
         - id: orders-service
           uri: lb://orders-service
           predicates:
             - Path=/api/orders/**
+          filters:
+            - AuthFilter
         - id: orders-details-service
           uri: lb://orders-details-service
           predicates:
             - Path=/api/ordersDetails/**
+          filters:
+            - AuthFilter
         - id: auth-service
           uri: lb://auth-service
           predicates:
