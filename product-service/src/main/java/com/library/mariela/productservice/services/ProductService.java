@@ -1,5 +1,6 @@
 package com.library.mariela.productservice.services;
 
+import com.library.commonsservice.dtos.BaseDto;
 import com.library.commonsservice.services.CommonService;
 import com.library.mariela.productservice.clients.IHistoricalPurchaseFeignClient;
 import com.library.mariela.productservice.clients.IStockControlFeignClient;
@@ -98,7 +99,7 @@ public class ProductService extends CommonService<Product, IProductRepository, P
             results.put("Message", "No existe el producto.");
             return results;
         }
-        if (productDto.get().isEnabled()) {
+        if (!productDto.get().isEnabled()) {
             results.put("Message", "No existe el producto.");
             return results;
         }
@@ -124,7 +125,7 @@ public class ProductService extends CommonService<Product, IProductRepository, P
         List<ProductDto> allProductsDtos = this.findAll();
         List<ProductDto> productsDtosAvailable = allProductsDtos
                 .stream()
-                .filter(productDto -> !productDto.isEnabled())
+                .filter(BaseDto::isEnabled)
                 .collect(Collectors.toList());
         productsDtosAvailable
                 .forEach(p -> stockControlFeignClient.getStockControlByProductId(p.getId())

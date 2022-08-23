@@ -5,14 +5,12 @@ import com.library.commonsservice.messages.Message;
 import com.library.mariela.orderservice.orderservice.dtos.OrderDetailDto;
 import com.library.mariela.orderservice.orderservice.dtos.OrderDto;
 import com.library.mariela.orderservice.orderservice.entities.Order;
-import com.library.mariela.orderservice.orderservice.enums.Status;
 import com.library.mariela.orderservice.orderservice.services.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,7 +25,7 @@ public class OrderController extends CommonController<Order, OrderDto, IOrderSer
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestParam OrderDto orderDto) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody OrderDto orderDto) {
         Optional<OrderDto> orderDtoOptional = commonService.findById(id);
         if (orderDtoOptional.isEmpty())
             return new ResponseEntity<>("Pedido no encontrado.", HttpStatus.NOT_FOUND);
@@ -59,7 +57,7 @@ public class OrderController extends CommonController<Order, OrderDto, IOrderSer
         Optional<OrderDto> orderDto = this.commonService.findById(orderId);
         if (orderDto.isEmpty())
             return new ResponseEntity<>(new Message("Pedido no encontrado"), HttpStatus.NOT_FOUND);
-        if (orderDto.get().isEnabled())
+        if (!orderDto.get().isEnabled())
             return new ResponseEntity<>(new Message("No existe el pedido"), HttpStatus.BAD_REQUEST);
         List<OrderDetailDto> detailDto = this.commonService.getOrderDetailsByOrderId(orderId);
         if (!detailDto.isEmpty())

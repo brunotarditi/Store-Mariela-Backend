@@ -42,6 +42,8 @@ public class UserService {
         User user = User.builder()
                 .id(generateSequence())
                 .userName(newUserDto.getUserName())
+                .firstName(newUserDto.getFirstName())
+                .lastName(newUserDto.getLastName())
                 .password(password)
                 .role(newUserDto.getRole())
                 .build();

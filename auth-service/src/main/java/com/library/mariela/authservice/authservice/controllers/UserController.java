@@ -1,13 +1,11 @@
 package com.library.mariela.authservice.authservice.controllers;
 
 
-import com.library.mariela.authservice.authservice.dtos.LoginUserDto;
-import com.library.mariela.authservice.authservice.dtos.NewUserDto;
-import com.library.mariela.authservice.authservice.dtos.RequestDto;
-import com.library.mariela.authservice.authservice.dtos.TokenDto;
+import com.library.mariela.authservice.authservice.dtos.*;
 import com.library.mariela.authservice.authservice.entities.User;
 import com.library.mariela.authservice.authservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +20,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody LoginUserDto loginUserDto){
+    public ResponseEntity<?> login(@RequestBody LoginUserDto loginUserDto){
         TokenDto tokenDto = userService.login(loginUserDto);
         if (tokenDto == null)
-            return ResponseEntity.badRequest().build();
+            return new ResponseEntity<>(new Message("Por favor revise el usuario o la contraseña"), HttpStatus.BAD_REQUEST);
         return ResponseEntity.ok(tokenDto);
     }
 
@@ -39,10 +37,10 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<User> create(@RequestBody NewUserDto newUserDto){
+    public ResponseEntity<?> create(@RequestBody NewUserDto newUserDto){
         User user = userService.save(newUserDto);
         if (user == null)
-            return ResponseEntity.badRequest().build();
+            return new ResponseEntity<>(new Message("El usuario ya existe"), HttpStatus.BAD_REQUEST);
         return ResponseEntity.ok(user);
     }
 }
