@@ -51,8 +51,8 @@ public class OrderService extends CommonService<Order, IOrderRepository, OrderDt
                 .stream()
                 .map(iFactory::createDto)
                 .collect(Collectors.toList());
-        double total = 0;
         for (OrderDto orderDto : orderDtosAvailable) {
+            double total = 0;
             for (OrderDetailDto orderDetailDto : orderDetailDtos){
                 if (orderDto.getId().equals(orderDetailDto.getIdOrder())){
                     total += orderDetailDto.getQuantity() * orderDetailDto.getSubtotal();

@@ -30,6 +30,7 @@ public class OrderController extends CommonController<Order, OrderDto, IOrderSer
         if (orderDtoOptional.isEmpty())
             return new ResponseEntity<>("Pedido no encontrado.", HttpStatus.NOT_FOUND);
         orderDtoOptional.get().setStatus(orderDto.getStatus());
+        orderDtoOptional.get().setPaymentMethod(orderDto.getPaymentMethod());
         return new ResponseEntity<>(commonService.save(orderDtoOptional.get()), HttpStatus.OK);
     }
 

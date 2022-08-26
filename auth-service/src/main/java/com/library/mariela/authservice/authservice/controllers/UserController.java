@@ -43,4 +43,12 @@ public class UserController {
             return new ResponseEntity<>(new Message("El usuario ya existe"), HttpStatus.BAD_REQUEST);
         return ResponseEntity.ok(user);
     }
+
+    @GetMapping("/user/{userName}")
+    public ResponseEntity<?> getUserByUserName(@PathVariable String userName){
+        UserDto userDto = this.userService.getUserByUserName(userName);
+        if (userDto == null)
+            return new ResponseEntity<>(new Message("Usuario no encontrado"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
 }

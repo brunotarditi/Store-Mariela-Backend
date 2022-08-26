@@ -1,10 +1,7 @@
 package com.library.mariela.authservice.authservice.services;
 
 
-import com.library.mariela.authservice.authservice.dtos.LoginUserDto;
-import com.library.mariela.authservice.authservice.dtos.NewUserDto;
-import com.library.mariela.authservice.authservice.dtos.RequestDto;
-import com.library.mariela.authservice.authservice.dtos.TokenDto;
+import com.library.mariela.authservice.authservice.dtos.*;
 import com.library.mariela.authservice.authservice.entities.DbSequence;
 import com.library.mariela.authservice.authservice.entities.User;
 import com.library.mariela.authservice.authservice.repositories.IUserRepository;
@@ -67,6 +64,21 @@ public class UserService {
         if (iUserRepository.findByUserName(userName).isEmpty())
             return null;
         return new TokenDto(token);
+    }
+
+    public UserDto getUserByUserName(String userName){
+        Optional<User> user = this.iUserRepository.findByUserName(userName);
+        UserDto userDto = new UserDto();
+        return user
+                .stream()
+                .map(u -> {
+                    userDto.setId(u.getId());
+                    userDto.setUserName(u.getUserName());
+                    userDto.setLastName(u.getLastName());
+                    userDto.setFirstName(u.getFirstName());
+                    return userDto;
+                })
+                .findFirst().orElse(null);
     }
 
     private long generateSequence(){

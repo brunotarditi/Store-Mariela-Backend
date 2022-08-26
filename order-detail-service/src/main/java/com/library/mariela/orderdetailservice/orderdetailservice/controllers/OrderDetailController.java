@@ -44,11 +44,11 @@ public class OrderDetailController extends CommonController<OrderDetail, OrderDe
         OrderDetail orderDetail = commonService.addItemToOrderDetail(productId, orderDetailDto);
         if (orderDetail == null)
             return new ResponseEntity<>(new Message("No pudo añadirse al carrito"), HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(new Message("Añadido al carrito"), HttpStatus.OK);
+        return new ResponseEntity<>(orderDetail, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteToCart/{id}")
-    public ResponseEntity<?> addItemToOrderDetail(@PathVariable Long id) {
+    public ResponseEntity<?> deleteItemToOrderDetail(@PathVariable Long id) {
         OrderDetail orderDetail = commonService.deleteItemToOrderDetail(id);
         if (orderDetail == null)
             return new ResponseEntity<>(new Message("No pudo eliminarse del carrito"), HttpStatus.BAD_REQUEST);

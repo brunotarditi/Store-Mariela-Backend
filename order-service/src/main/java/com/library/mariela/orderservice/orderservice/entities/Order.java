@@ -23,4 +23,6 @@ public class Order extends BaseEntity {
     @Column(name = "status")
     private Status status;
 
+    @Column(name = "payment_method")
+    private String paymentMethod;
 }

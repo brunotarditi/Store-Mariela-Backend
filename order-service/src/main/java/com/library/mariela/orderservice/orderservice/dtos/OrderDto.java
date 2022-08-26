@@ -17,5 +17,6 @@ import java.util.List;
 public class OrderDto extends BaseDto {
     private double total;
     private Status status;
+    private String paymentMethod;
     private List<OrderDetailDto> orderDetailDtos = new ArrayList<>();
 }
