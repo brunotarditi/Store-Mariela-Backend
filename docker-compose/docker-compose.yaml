@@ -14,5 +14,54 @@ services:
     restart: always
     networks:
       - storemariela
+    depends_on:
+      - config-service
+  mongodb:
+    image: mongo  
+    ports:
+      - "27017:27017"
+    restart: always
+    networks:
+      - storemariela
+    depends_on:
+      - config-service
+      - eureka-service
+  mysqldb:
+    image: mysql  
+    ports:
+      - "3306:3306"
+    restart: always
+    networks:
+      - storemariela
+    depends_on:
+      - config-service
+      - eureka-service
+    environment: 
+      MYSQL_DATABASE: root
+      MYSQL_ROOT_PASSWORD: 1234
+  auth-service:
+    image: auth-service    
+    restart: always
+    networks:
+      - storemariela
+    depends_on:
+      - config-service
+      - eureka-service
+  brand-service:
+    image: brand-service    
+    restart: always
+    networks:
+      - storemariela
+    depends_on:
+      - config-service
+      - eureka-service
+  gateway-service:
+    image: gateway-service    
+    restart: always
+    networks:
+      - storemariela
+    depends_on:
+      - config-service
+      - eureka-service
 networks:
   storemariela:
