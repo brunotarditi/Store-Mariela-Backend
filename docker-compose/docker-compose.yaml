@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  config-service:
+    image: config-service
+    ports:
+      - "8081:8081"
+    restart: always
+    networks:
+      - storemariela
+  eureka-service:
+    image: eureka-service
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - storemariela
+networks:
+  storemariela:
