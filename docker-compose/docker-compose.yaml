@@ -47,8 +47,8 @@ services:
     depends_on:
       - config-service
       - eureka-service
-  brand-service:
-    image: brand-service    
+  brands-service:
+    image: brands-service    
     restart: always
     networks:
       - storemariela
